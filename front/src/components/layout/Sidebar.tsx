@@ -25,8 +25,8 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
 
   return (
     <div
-      className={`bg-gray-800 text-white h-screen flex flex-col transition-all duration-300 ${
-        collapsed ? "w-16" : "w-60"
+      className={`bg-gray-800 text-white h-100% flex flex-col transition-all duration-300 ${
+        collapsed ? "w-20" : "w-60"
       }`}
     >
       <div

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import StatCard from "../components/dashboard/StatCard";
 import ChartCard from "../components/dashboard/ChartCard";
 import { statCards, recentOrders, popularProducts } from "../data/mockData";
+import ProductCard from "../components/dashboard/ProductCard";
 
 const Dashboard: React.FC = () => {
   return (
@@ -117,36 +118,14 @@ const Dashboard: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {popularProducts.map((product) => (
-            <div
+            <ProductCard
               key={product.id}
-              className="bg-white rounded-lg shadow-sm overflow-hidden"
-            >
-              <div
-                className="h-36 w-full bg-gray-200 bg-center bg-cover"
-                style={{ backgroundImage: `url(${product.image})` }}
-              ></div>
-              <div className="p-4">
-                <div className="font-semibold text-gray-800 mb-1">
-                  {product.name}
-                </div>
-                <div className="text-orange-500 font-medium mb-2">
-                  {product.price}
-                </div>
-                <div className="text-xs text-gray-500">{product.category}</div>
-
-                <div className="flex justify-between mt-3">
-                  <Link
-                    to={`/produtos/editar/${product.id}`}
-                    className="text-blue-600 hover:text-blue-800"
-                  >
-                    <i className="fas fa-pen"></i>
-                  </Link>
-                  <button className="text-red-500 hover:text-red-700">
-                    <i className="fas fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
+              id={product.id}
+              name={product.name}
+              price={product.price}
+              category={product.category}
+              image={product.image}
+            />
           ))}
         </div>
       </div>

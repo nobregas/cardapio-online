@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface ProductCardProps {
+  id: string;
   name: string;
   price: string;
   category: string;
@@ -8,13 +10,14 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
+  id,
   name,
   price,
   category,
   image,
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+    <div key={id} className="bg-white rounded-lg shadow-sm overflow-hidden">
       <div
         className="h-36 w-full bg-gray-200 bg-center bg-cover"
         style={{ backgroundImage: `url(${image})` }}
@@ -25,9 +28,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="text-xs text-gray-500">{category}</div>
 
         <div className="flex justify-between mt-3">
-          <button className="text-blue-600 hover:text-blue-800">
+          <Link
+            to={`/produtos/editar/${id}`}
+            className="text-blue-600 hover:text-blue-800"
+          >
             <i className="fas fa-pen"></i>
-          </button>
+          </Link>
           <button className="text-red-500 hover:text-red-700">
             <i className="fas fa-trash"></i>
           </button>
