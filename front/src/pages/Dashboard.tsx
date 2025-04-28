@@ -1,4 +1,3 @@
-// src/pages/Dashboard.tsx
 import React from "react";
 import { Link } from "react-router-dom";
 import StatCard from "../components/dashboard/StatCard";

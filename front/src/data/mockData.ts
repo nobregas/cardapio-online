@@ -1,5 +1,3 @@
-// src/data/mockData.ts
-
 import { Order, Product, StatData, NavItem } from '../types';
 
 export const navItems: NavItem[] = [
