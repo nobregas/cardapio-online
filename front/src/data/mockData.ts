@@ -50,7 +50,7 @@ export const recentOrders: Order[] = [
     customer: 'João Silva',
     items: 3,
     total: 'R$ 82,90',
-    status: 'Entregue',
+    status: 'EmTransporte',
     date: '20/04/2025 - 19:42',
   },
   {
@@ -58,7 +58,7 @@ export const recentOrders: Order[] = [
     customer: 'Maria Oliveira',
     items: 2,
     total: 'R$ 65,50',
-    status: 'Pagemento Pendente',
+    status: 'PagamentoPendente',
     date: '20/04/2025 - 19:30',
   },
   {
