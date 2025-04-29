@@ -26,6 +26,7 @@ export interface Product {
   description: string;
   category: string;
   image: string;
+  isActive?: boolean;
 }
 
 export interface StatData {

@@ -125,6 +125,7 @@ export const products: Product[] = [
     description: 'Pizza com molho de tomate, mussarela e manjericão.',
     category: 'Pizzas Tradicionais',
     image: '/api/placeholder/200/140',
+    isActive: true,
   },
   {
     id: '2',
@@ -134,6 +135,7 @@ export const products: Product[] = [
     description: 'Pizza com molho de tomate, mussarela e pepperoni.',
     category: 'Pizzas Especiais',
     image: '/api/placeholder/200/140',
+    isActive: true,
   },
   {
     id: '3',
@@ -143,6 +145,7 @@ export const products: Product[] = [
     description: 'Refrigerante de 2 litros.',
     category: 'Bebidas',
     image: '/api/placeholder/200/140',
+    isActive: true,
   },
   {
     id: '4',
@@ -152,6 +155,7 @@ export const products: Product[] = [
     description: 'Pizza com quatro tipos de queijo.',
     category: 'Pizzas Tradicionais',
     image: '/api/placeholder/200/140',
+    isActive: true,
   },
 ];
 
