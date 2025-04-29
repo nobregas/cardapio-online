@@ -43,4 +43,24 @@ export interface NavItem {
   active?: boolean;
 }
 
+export interface LineData {
+  month: Month;
+  access: number;
+  orders: number;
+}
+
+type Month =
+  "jan"
+  | "feb"
+  | "mar"
+  | "apr"
+  | "may"
+  | "jun"
+  | "jul"
+  | "aug"
+  | "sep"
+  | "oct"
+  | "nov"
+  | "dec";
+
 type Color = "blue" | "green" | "red" | "yellow" | "purple" | "orange";

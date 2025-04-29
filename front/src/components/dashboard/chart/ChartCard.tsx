@@ -3,8 +3,9 @@ import React, { useState } from "react";
 interface ChartCardProps {
   title: string;
   showPeriodSelector?: boolean;
-  chartContent: string;
+  chartContent: React.ReactNode;
 }
+
 
 const ChartCard: React.FC<ChartCardProps> = ({
   title,

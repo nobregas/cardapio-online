@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import StatCard from "../components/dashboard/StatCard";
-import ChartCard from "../components/dashboard/ChartCard";
+import ChartCard from "../components/dashboard/chart/ChartCard";
 import { statCards, recentOrders, popularProducts } from "../data/mockData";
 import ProductCard from "../components/dashboard/ProductCard";
 import OrdersTable from "../components/dashboard/OrdersTable";
+import LineChartComponent from "../components/dashboard/chart/LineChartComponent";
+import BarChartComponent from "../components/dashboard/chart/BarsChart";
 
 const Dashboard: React.FC = () => {
+  const [linePeriod, setLinePeriod] = useState("monthly");
+
+  const handlePeriodChange = (period: string) => {
+    setLinePeriod(period);
+  };
+
   return (
     <div>
       <h2 className="text-2xl font-medium text-gray-800 mb-6">Dashboard</h2>
@@ -29,14 +37,19 @@ const Dashboard: React.FC = () => {
         <div className="lg:col-span-2">
           <ChartCard
             title="Acessos e Pedidos"
-            showPeriodSelector={true}
-            chartContent="Gráfico de linhas: Acessos vs Pedidos ao longo do tempo"
+            showPeriodSelector={false}
+            chartContent={
+              <LineChartComponent
+                period={linePeriod}
+                onPeriodChange={handlePeriodChange}
+              />
+            }
           />
         </div>
         <div>
           <ChartCard
             title="Produtos Mais Pedidos"
-            chartContent="Gráfico de barras: Top 5 produtos"
+            chartContent={<BarChartComponent />}
           />
         </div>
       </div>
