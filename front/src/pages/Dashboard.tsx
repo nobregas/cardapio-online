@@ -65,6 +65,7 @@ const Dashboard: React.FC = () => {
               id={product.id}
               name={product.name}
               price={product.price}
+              discountPrice={product.discountPrice}
               category={product.category}
               image={product.image}
             />

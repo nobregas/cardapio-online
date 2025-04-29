@@ -16,11 +16,14 @@ export interface Order {
   date: string;
 }
 
+// discount price significa preco total com desconto
 export interface Product {
   [key: string]: unknown;
   id: string;
   name: string;
   price: string;
+  discountPrice: string;
+  description: string;
   category: string;
   image: string;
 }
