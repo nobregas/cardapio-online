@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import TrashIcon from "../shared/TrashIcon";
+import TrashIcon from "../ui/TrashIcon";
 
 interface ProductCardProps {
   id: string;

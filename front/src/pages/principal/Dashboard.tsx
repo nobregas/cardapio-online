@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import StatCard from "../components/dashboard/StatCard";
-import ChartCard from "../components/dashboard/chart/ChartCard";
-import { statCards, recentOrders, popularProducts } from "../data/mockData";
-import ProductCard from "../components/dashboard/ProductCard";
-import OrdersTable from "../components/dashboard/OrdersTable";
-import LineChartComponent from "../components/dashboard/chart/LineChartComponent";
-import BarChartComponent from "../components/dashboard/chart/BarsChart";
+import StatCard from "../../components/dashboard/StatCard";
+import ChartCard from "../../components/dashboard/chart/ChartCard";
+import { statCards, recentOrders, popularProducts } from "../../data/mockData";
+import ProductCard from "../../components/dashboard/ProductCard";
+import LineChartComponent from "../../components/dashboard/chart/LineChartComponent";
+import BarChartComponent from "../../components/dashboard/chart/BarsChart";
+import DashboardTable from "../../components/dashboard/DashboardTable";
+import PageTitle from "../../components/ui/PageTitle";
 
 const Dashboard: React.FC = () => {
   const [linePeriod, setLinePeriod] = useState("monthly");
@@ -17,7 +18,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-medium text-gray-800 mb-6">Dashboard</h2>
+      <PageTitle title="Dashboard" />
 
       {/* Dashboard Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
@@ -55,7 +56,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Recent Orders */}
-      <OrdersTable
+      <DashboardTable
         orders={recentOrders}
         title="Pedidos Recentes"
         path="/pedidos"

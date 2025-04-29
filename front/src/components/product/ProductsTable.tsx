@@ -25,11 +25,6 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       displayText: "Inativo",
       className: "bg-gray-100 text-gray-600",
     },
-    promocao: {
-      value: "promocao",
-      displayText: "Em Promoção",
-      className: "bg-blue-100 text-blue-600",
-    },
   };
 
   // Definição das colunas para a tabela de produtos
@@ -47,7 +42,8 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       items={products}
       columns={productColumns}
       title={title}
-      viewAllPath={path}
+      viewAllPath={"/products"}
+      viewAllText=""
       emptyMessage="Nenhum produto encontrado."
       statusConfig={productStatusConfigs}
       statusField="status"

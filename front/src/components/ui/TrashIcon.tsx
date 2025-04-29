@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
-const DeleteConfirmation = ({ onConfirm, itemName = "este item" }) => {
+interface TrashIconProps {
+  onConfirm: () => void;
+  itemName?: string;
+}
+
+const TrashIcon = ({ onConfirm, itemName = "este item" }: TrashIconProps) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   
   const handleDelete = () => {
@@ -94,4 +99,4 @@ const DeleteConfirmation = ({ onConfirm, itemName = "este item" }) => {
   );
 };
 
-export default DeleteConfirmation;
+export default TrashIcon;

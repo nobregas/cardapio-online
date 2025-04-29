@@ -5,7 +5,14 @@ import {
   Navigate,
 } from "react-router-dom";
 import Layout from "./components/layout/Layout";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/principal/Dashboard";
+import Products from "./pages/principal/Products";
+import Categorias from "./pages/principal/Categorias";
+import Adicionais from "./pages/principal/Adicionais";
+import Promocoes from "./pages/principal/Promocoes";
+import Pedidos from "./pages/principal/Pedidos";
+import Personalizacao from "./pages/principal/Personalizacao";
+import Configuracoes from "./pages/principal/Configuracoes";
 
 function App() {
   return (
@@ -13,60 +20,13 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route
-            path="/produtos"
-            element={
-              <div className="p-6 text-xl">
-                Página de Produtos em Construção
-              </div>
-            }
-          />
-          <Route
-            path="/categorias"
-            element={
-              <div className="p-6 text-xl">
-                Página de Categorias em Construção
-              </div>
-            }
-          />
-          <Route
-            path="/adicionais"
-            element={
-              <div className="p-6 text-xl">
-                Página de Adicionais em Construção
-              </div>
-            }
-          />
-          <Route
-            path="/promocoes"
-            element={
-              <div className="p-6 text-xl">
-                Página de Promoções em Construção
-              </div>
-            }
-          />
-          <Route
-            path="/pedidos"
-            element={
-              <div className="p-6 text-xl">Página de Pedidos em Construção</div>
-            }
-          />
-          <Route
-            path="/personalizacao"
-            element={
-              <div className="p-6 text-xl">
-                Página de Personalização em Construção
-              </div>
-            }
-          />
-          <Route
-            path="/configuracoes"
-            element={
-              <div className="p-6 text-xl">
-                Página de Configurações em Construção
-              </div>
-            }
-          />
+          <Route path="/produtos" element={<Products />} />
+          <Route path="/categorias" element={<Categorias />} />
+          <Route path="/adicionais" element={<Adicionais />} />
+          <Route path="/promocoes" element={<Promocoes />} />
+          <Route path="/pedidos" element={<Pedidos />} />
+          <Route path="/personalizacao" element={<Personalizacao />} />
+          <Route path="/configuracoes" element={<Configuracoes />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
