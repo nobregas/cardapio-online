@@ -1,7 +1,7 @@
-import { Switch } from "@material-tailwind/react";
 import React from "react";
 import { Link } from "react-router-dom";
 import SwitchButton from "../../ui/SwitchButton";
+import Pagination from "../../ui/Pagination";
 
 interface TableItem {
   id: string | number;
@@ -31,6 +31,11 @@ interface GenericTableProps<T extends TableItem> {
   viewAllText?: string;
   statusConfig?: Record<string, StatusConfig>;
   statusField?: keyof T;
+  pagination?: {
+    currentPage: number;
+    totalPages: number;
+    onPageChange: (page: number) => void;
+  };
 }
 
 function GenericTable<T extends TableItem>({
@@ -42,6 +47,7 @@ function GenericTable<T extends TableItem>({
   viewAllText = "Ver todos",
   statusConfig,
   statusField,
+  pagination,
 }: GenericTableProps<T>) {
   if (items.length === 0) {
     return (
@@ -71,10 +77,8 @@ function GenericTable<T extends TableItem>({
     if (column.toggleField && column.onToggle) {
       const key = column.key as string;
       const isActive = Boolean(item[key]);
-    
-      return (
-        <SwitchButton checked={isActive} onChange={column.onToggle}/>
-      );
+
+      return <SwitchButton checked={isActive} onChange={column.onToggle} />;
     }
 
     // se a coluna tiver um render persolnalizado
@@ -88,47 +92,56 @@ function GenericTable<T extends TableItem>({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm mb-8">
-      <div className="px-5 py-4 border-b flex justify-between items-center">
-        <h3 className="text-lg font-medium text-gray-800">{title}</h3>
-        {viewAllPath && (
-          <Link to={viewAllPath} className="text-orange-500 font-medium">
-            {viewAllText}
-          </Link>
-        )}
-      </div>
+    <>
+      <div className="bg-white rounded-lg shadow-sm mb-8">
+        <div className="px-5 py-4 border-b flex justify-between items-center">
+          <h3 className="text-lg font-medium text-gray-800">{title}</h3>
+          {viewAllPath && (
+            <Link to={viewAllPath} className="text-orange-500 font-medium">
+              {viewAllText}
+            </Link>
+          )}
+        </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="text-left text-gray-500 border-b">
-              {columns.map((column) => (
-                <th
-                  key={column.key as string}
-                  className="px-5 py-4 font-medium"
-                >
-                  {column.header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.id} className="border-b">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="text-left text-gray-500 border-b">
                 {columns.map((column) => (
-                  <td
-                    key={`${item.id}-${column.key as string}`}
-                    className="px-5 py-4"
+                  <th
+                    key={column.key as string}
+                    className="px-5 py-4 font-medium"
                   >
-                    {renderCell(item, column)}
-                  </td>
+                    {column.header}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <tr key={item.id} className="border-b">
+                  {columns.map((column) => (
+                    <td
+                      key={`${item.id}-${column.key as string}`}
+                      className="px-5 py-4"
+                    >
+                      {renderCell(item, column)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+      {pagination && (
+        <Pagination
+          currentPage={pagination.currentPage}
+          totalPages={pagination.totalPages}
+          onPageChange={pagination.onPageChange}
+        />
+      )}
+    </>
   );
 }
 

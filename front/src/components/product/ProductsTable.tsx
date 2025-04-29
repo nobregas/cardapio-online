@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import GenericTable from "../shared/table/GenericTable";
 import { Product } from "../../types";
 
@@ -13,9 +13,11 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
   title,
   path,
 }) => {
-  const handleToggle = (item: Product) => {
-    console.log(item);
+  const handleToggle = (checked: boolean) => {
+    console.log(checked);
   };
+
+  const [page, setPage] = useState(1);
 
   // Definição das colunas para a tabela de produtos
   const productColumns = [
@@ -27,8 +29,8 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       key: "status",
       header: "Status",
       toggleField: true,
-      onToggle: (item: Product) => {
-        handleToggle(item);
+      onToggle: (checked: boolean) => {
+        handleToggle(checked);
       },
     },
     { key: "lastUpdated", header: "Atualizado em" },
@@ -43,6 +45,15 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       viewAllText=""
       emptyMessage="Nenhum produto encontrado."
       statusField="status"
+      pagination={
+        {
+          currentPage: page,
+          totalPages: 5,
+          onPageChange: (newPage: number) => {
+            setPage(newPage);
+          },
+        }
+      }
     />
   );
 };
