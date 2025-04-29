@@ -1,4 +1,4 @@
-import { Order, Product, StatData, NavItem } from '../types';
+import { Order, Product, StatData, NavItem, BasicData } from '../types';
 
 export const navItems: NavItem[] = [
   { path: '/', icon: 'fa-chart-pie', label: 'Dashboard', active: true },
@@ -154,3 +154,10 @@ export const products: Product[] = [
     image: '/api/placeholder/200/140',
   },
 ];
+
+export const basicData: BasicData = {
+  accessToday: 1524,
+  ordersToday: 83,
+  activeProducts: 23,
+  dailyBilling: 2547,
+};

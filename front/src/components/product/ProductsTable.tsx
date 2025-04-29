@@ -13,18 +13,8 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
   title,
   path,
 }) => {
-  // Configurações de status para produtos
-  const productStatusConfigs = {
-    ativo: {
-      value: "ativo",
-      displayText: "Ativo",
-      className: "bg-green-100 text-green-600",
-    },
-    inativo: {
-      value: "inativo",
-      displayText: "Inativo",
-      className: "bg-gray-100 text-gray-600",
-    },
+  const handleToggle = (item: Product) => {
+    console.log(item);
   };
 
   // Definição das colunas para a tabela de produtos
@@ -33,7 +23,14 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
     { key: "name", header: "Nome" },
     { key: "category", header: "Categoria" },
     { key: "price", header: "Preço" },
-    { key: "status", header: "Status" },
+    {
+      key: "status",
+      header: "Status",
+      toggleField: true,
+      onToggle: (item: Product) => {
+        handleToggle(item);
+      },
+    },
     { key: "lastUpdated", header: "Atualizado em" },
   ];
 
@@ -45,7 +42,6 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       viewAllPath={"/products"}
       viewAllText=""
       emptyMessage="Nenhum produto encontrado."
-      statusConfig={productStatusConfigs}
       statusField="status"
     />
   );

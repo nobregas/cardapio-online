@@ -1,5 +1,7 @@
+import { Switch } from "@material-tailwind/react";
 import React from "react";
 import { Link } from "react-router-dom";
+import SwitchButton from "../../ui/SwitchButton";
 
 interface TableItem {
   id: string | number;
@@ -15,6 +17,8 @@ interface StatusConfig {
 interface ColumnConfig<T extends TableItem> {
   key: keyof T | string;
   header: string;
+  toggleField?: boolean;
+  onToggle?: (checked: boolean) => void;
   render?: (item: T) => React.ReactNode;
 }
 
@@ -62,6 +66,15 @@ function GenericTable<T extends TableItem>({
           </span>
         );
       }
+    }
+
+    if (column.toggleField && column.onToggle) {
+      const key = column.key as string;
+      const isActive = Boolean(item[key]);
+    
+      return (
+        <SwitchButton checked={isActive} onChange={column.onToggle}/>
+      );
     }
 
     // se a coluna tiver um render persolnalizado

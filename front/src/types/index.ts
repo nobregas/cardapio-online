@@ -49,6 +49,13 @@ export interface LineData {
   orders: number;
 }
 
+export interface BasicData {
+  accessToday: number;
+  ordersToday: number;
+  activeProducts: number;
+  dailyBilling: number;
+}
+
 type Month =
   "jan"
   | "feb"
