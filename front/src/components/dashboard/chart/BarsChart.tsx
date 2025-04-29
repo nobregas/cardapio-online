@@ -85,8 +85,8 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({ data = topProduct
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
             <XAxis 
               dataKey="name" 
-              tick={{ fontSize: 12, angle: 0 , textAnchor: 'end', }}
-              height={10}
+              tick={{ fontSize: 12}}
+              height={20}
               interval={0}
             />
             <YAxis 

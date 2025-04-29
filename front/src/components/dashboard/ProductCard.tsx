@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import TrashIcon from "../shared/TrashIcon";
 
 interface ProductCardProps {
   id: string;
@@ -19,6 +20,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
   image,
 }) => {
   const hasDiscount = discountPrice && discountPrice !== price;
+
+  const handleDelete = () => {
+    // Implementar a lógica de exclusão do produto aqui
+    console.log(`Produto ${id} excluído`);
+  }
 
   return (
     <div key={id} className="bg-white rounded-lg shadow-sm overflow-hidden">
@@ -47,9 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           >
             <i className="fas fa-pen"></i>
           </Link>
-          <button className="text-red-500 hover:text-red-700">
-            <i className="fas fa-trash"></i>
-          </button>
+          <TrashIcon onConfirm={handleDelete} />
         </div>
       </div>
     </div>
