@@ -33,7 +33,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
         handleToggle(checked);
       },
     },
-    { key: "lastUpdated", header: "Atualizado em" },
+    { key: "actions", header: "Ações", isActionColumn: true },
   ];
 
   return (
@@ -54,6 +54,22 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
           },
         }
       }
+      rowActions={{
+        delete: {
+          hasDelete: true,
+          onDelete: (item) => {
+            console.log("Deletar produto:", item);
+          },
+          itemName: "produto",
+        },
+        edit: {
+          hasEdit: true,
+          onEdit: (item) => {
+            console.log("Editar produto:", item);
+          },
+        },
+        
+      }}
     />
   );
 };

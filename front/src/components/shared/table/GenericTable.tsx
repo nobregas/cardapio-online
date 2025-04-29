@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import SwitchButton from "../../ui/SwitchButton";
 import Pagination from "../../ui/Pagination";
+import ActionButtons from "./ActionButtons";
 
 interface TableItem {
   id: string | number;
@@ -20,6 +21,7 @@ interface ColumnConfig<T extends TableItem> {
   toggleField?: boolean;
   onToggle?: (checked: boolean) => void;
   render?: (item: T) => React.ReactNode;
+  isActionColumn?: boolean;
 }
 
 interface GenericTableProps<T extends TableItem> {
@@ -36,6 +38,17 @@ interface GenericTableProps<T extends TableItem> {
     totalPages: number;
     onPageChange: (page: number) => void;
   };
+  rowActions?: {
+    delete?: {
+      hasDelete: boolean;
+      onDelete: (item: T) => void;
+      itemName?: string;
+    };
+    edit?: {
+      hasEdit: boolean;
+      onEdit: (item: T) => void;
+    };
+  };
 }
 
 function GenericTable<T extends TableItem>({
@@ -48,6 +61,7 @@ function GenericTable<T extends TableItem>({
   statusConfig,
   statusField,
   pagination,
+  rowActions,
 }: GenericTableProps<T>) {
   if (items.length === 0) {
     return (
@@ -79,6 +93,10 @@ function GenericTable<T extends TableItem>({
       const isActive = Boolean(item[key]);
 
       return <SwitchButton checked={isActive} onChange={column.onToggle} />;
+    }
+
+    if (column.isActionColumn) {
+      return <ActionButtons delete={rowActions?.delete} edit={rowActions?.edit} item={item} />;
     }
 
     // se a coluna tiver um render persolnalizado

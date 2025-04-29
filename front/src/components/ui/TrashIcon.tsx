@@ -78,7 +78,7 @@ const TrashIcon = ({ onConfirm, itemName = "este item" }: TrashIconProps) => {
               Tem certeza que deseja excluir {itemName}? Essa ação não pode ser desfeita.
             </p>
             
-            <div className="flex justify-end space-x-3">
+            <div className="flex justify-center space-x-3">
               <button
                 onClick={handleCancel}
                 className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
