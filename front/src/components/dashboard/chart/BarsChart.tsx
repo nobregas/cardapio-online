@@ -72,7 +72,7 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({ data = topProduct
               }}
             />
             <Bar dataKey="vendas" name="Unidades Vendidas" radius={[0, 4, 4, 0]}>
-              {sortedData.map((entry, index) => (
+              {sortedData.map((_entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Bar>
@@ -105,7 +105,7 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({ data = topProduct
             />
             <Legend wrapperStyle={{ fontSize: isTablet ? 10 : 12, paddingTop: 10 }} />
             <Bar dataKey="vendas" name="Unidades Vendidas" radius={[4, 4, 0, 0]}>
-              {sortedData.map((entry, index) => (
+              {sortedData.map((_entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Bar>

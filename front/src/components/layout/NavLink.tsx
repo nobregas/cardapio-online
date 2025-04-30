@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface NavLinkProps {
     label: string
     link: string

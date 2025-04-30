@@ -88,7 +88,7 @@ const LineChartComponent: React.FC<LineChartComponentProps> = ({
     if (numValue >= 1000) {
       return `${(numValue / 1000).toFixed(1)}K`;
     }
-    return numValue;
+    return String(numValue);
   };
 
   return (
@@ -148,7 +148,7 @@ const LineChartComponent: React.FC<LineChartComponentProps> = ({
             width={40}
           />
           <Tooltip 
-            formatter={(value) => [formatNumber(value), '']}
+            formatter={(value: string | number) => formatNumber(Array.isArray(value) ? value[0] : value)}
             labelStyle={{ color: '#555' }}
             contentStyle={{ 
               backgroundColor: 'white', 

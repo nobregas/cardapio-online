@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+//import  { useState } from "react";
 import ProductsTable from "../../components/product/ProductsTable";
 import { products } from "../../data/mockData";
-import PageTitle from "../../components/ui/PageTitle";
-import Button from "../../components/ui/Button";
 import PageHeader from "../../components/shared/PageHeader";
 
 const Products = () => {
-  const [categoryFilter, setCategoryFilter] = useState<string>("");
-  const [statusFilter, setStatusFilter] = useState<string>("");
+  //const [categoryFilter, setCategoryFilter] = useState<string>("");
+  //const [statusFilter, setStatusFilter] = useState<string>("");
 
-  const [searchQuery, setSearchQuery] = useState<string>("");
+ // const [searchQuery, setSearchQuery] = useState<string>("");
 
   const handleSearch = (query: string): void => {
-    setSearchQuery(query);
+    //setSearchQuery(query);
     // Aqui você implementaria a lógica de busca
     console.log("Searching for:", query);
   };
@@ -32,7 +30,7 @@ const Products = () => {
         { value: "4", label: "Sobremesas" }
       ],
       onChange: (value: string): void => {
-        setCategoryFilter(value);
+        //setCategoryFilter(value);
         console.log("Category filter changed:", value);
       }
     },
@@ -43,7 +41,7 @@ const Products = () => {
         { value: "2", label: "Inativos" }
       ],
       onChange: (value: string): void => {
-        setStatusFilter(value);
+        //setStatusFilter(value);
         console.log("Status filter changed:", value);
       }
     }
@@ -61,7 +59,7 @@ const Products = () => {
       />
 
       {/* Tabela de Produtos */}
-      <ProductsTable products={products} title={"Produtos"} path={""} />
+      <ProductsTable products={products} title={"Produtos"} path={"/produtos"} />
     </div>
   );
 };

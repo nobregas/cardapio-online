@@ -1,5 +1,3 @@
-import React from "react";
-
 type Color = "blue" | "green" | "red" | "yellow" | "purple" | "orange";
 
 interface StatCardProps {

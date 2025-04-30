@@ -1,4 +1,3 @@
-import React from 'react'
 import PageTitle from '../../components/ui/PageTitle'
 
 const Configuracoes = () => {
