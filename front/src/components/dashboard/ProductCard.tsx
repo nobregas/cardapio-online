@@ -24,28 +24,30 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const handleDelete = () => {
     // Implementar a lógica de exclusão do produto aqui
     console.log(`Produto ${id} excluído`);
-  }
+  };
 
   return (
     <div key={id} className="bg-white rounded-lg shadow-sm overflow-hidden">
-      <div
+      <img
         className="h-36 w-full bg-gray-200 bg-center bg-cover"
-        style={{ backgroundImage: `url(${image})` }}
-      ></div>
+        src={image}
+      ></img>
       <div className="p-4">
         <div className="font-semibold text-gray-800 mb-1">{name}</div>
         <div className="flex items-center mb-2">
           {hasDiscount ? (
             <>
               <div className="text-orange-500 font-medium">{discountPrice}</div>
-              <div className="text-gray-400 line-through text-sm ml-2">{price}</div>
+              <div className="text-gray-400 line-through text-sm ml-2">
+                {price}
+              </div>
             </>
           ) : (
             <div className="text-orange-500 font-medium">{price}</div>
           )}
         </div>
         <div className="text-xs text-gray-500">{category}</div>
-        
+
         <div className="flex justify-between mt-3">
           <Link
             to={`/produtos/editar/${id}`}

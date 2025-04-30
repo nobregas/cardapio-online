@@ -22,6 +22,9 @@ interface ColumnConfig<T extends TableItem> {
   onToggle?: (checked: boolean) => void;
   render?: (item: T) => React.ReactNode;
   isActionColumn?: boolean;
+  image?: {
+    isImageColumn?: boolean;
+  };
 }
 
 interface GenericTableProps<T extends TableItem> {
@@ -96,7 +99,23 @@ function GenericTable<T extends TableItem>({
     }
 
     if (column.isActionColumn) {
-      return <ActionButtons delete={rowActions?.delete} edit={rowActions?.edit} item={item} />;
+      return (
+        <ActionButtons
+          delete={rowActions?.delete}
+          edit={rowActions?.edit}
+          item={item}
+        />
+      );
+    }
+
+    if (column.image?.isImageColumn) {
+      return (
+        <img
+          src={item.image as string}
+          alt="Imagem"
+          className="h-20 w-20 object-cover"
+        />
+      );
     }
 
     // se a coluna tiver um render persolnalizado

@@ -21,7 +21,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
 
   // Definição das colunas para a tabela de produtos
   const productColumns = [
-    { key: "id", header: "ID" },
+    { key: "image", header: "Imagem", image: { isImageColumn: true } },
     { key: "name", header: "Nome" },
     { key: "category", header: "Categoria" },
     { key: "price", header: "Preço" },
@@ -45,15 +45,13 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       viewAllText=""
       emptyMessage="Nenhum produto encontrado."
       statusField="status"
-      pagination={
-        {
-          currentPage: page,
-          totalPages: 5,
-          onPageChange: (newPage: number) => {
-            setPage(newPage);
-          },
-        }
-      }
+      pagination={{
+        currentPage: page,
+        totalPages: 5,
+        onPageChange: (newPage: number) => {
+          setPage(newPage);
+        },
+      }}
       rowActions={{
         delete: {
           hasDelete: true,
@@ -68,7 +66,6 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
             console.log("Editar produto:", item);
           },
         },
-        
       }}
     />
   );
