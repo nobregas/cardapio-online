@@ -10,7 +10,7 @@ interface TableItem {
 }
 
 interface StatusConfig {
-  value: string;
+  value: string | boolean;
   displayText: string;
   className: string;
 }
@@ -113,7 +113,7 @@ function GenericTable<T extends TableItem>({
         <img
           src={item.image as string}
           alt="Imagem"
-          className="h-20 w-20 object-cover"
+          className="h-15 w-15 object-cover"
         />
       );
     }

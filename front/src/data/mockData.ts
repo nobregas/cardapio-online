@@ -187,7 +187,7 @@ export const categories: Category[] = [
     description: 'Refrigerantes e outras bebidas para acompanhar.',
     products: 1, 
     order: 3,
-    isActive: true,
+    isActive: false,
   },
 ];
 

@@ -11,13 +11,27 @@ interface CategoryTableProps {
 const CategoryTable = ({ categories, title, path }: CategoryTableProps) => {
   const [page, setPage] = useState(1);
 
+  const statusConfigs = {
+    true: {
+      value: true,
+      displayText: "Ativo",
+      className: "bg-green-100 text-green-600",
+    },
+    false: {
+      value: false,
+      displayText: "Inativo",
+      className: "bg-gray-100 text-gray-600",
+    },
+  };
+  
+
   const categoryColumns = [
     { key: "image", header: "Imagem", image: { isImageColumn: true } },
     { key: "name", header: "Nome" },
     { key: "description", header: "Descrição" },
     { key: "products", header: "Produtos" },
-    { key: "isActive", header: "Status",},
-    { key: "order", header: "Ordem"},
+    { key: "isActive", header: "Status" },
+    { key: "order", header: "Ordem" },
     { key: "actions", header: "Ações", isActionColumn: true },
   ];
 
@@ -27,9 +41,9 @@ const CategoryTable = ({ categories, title, path }: CategoryTableProps) => {
       columns={categoryColumns}
       title={title}
       viewAllPath={path}
-      viewAllText=""
-      emptyMessage="Nenhuma categoria encontrado."
-      statusField="status"
+      emptyMessage="Nenhuma categoria encontrada."
+      statusField="isActive"
+      statusConfig={statusConfigs}
       pagination={{
         currentPage: page,
         totalPages: 5,
@@ -41,7 +55,7 @@ const CategoryTable = ({ categories, title, path }: CategoryTableProps) => {
         delete: {
           hasDelete: true,
           onDelete: (item) => {
-            console.log("Deletar Categoria:", item);
+            console.log("Deletar categoria:", item);
           },
           itemName: "categoria",
         },
