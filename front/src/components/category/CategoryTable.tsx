@@ -15,9 +15,9 @@ const CategoryTable = ({ categories, title, path }: CategoryTableProps) => {
     { key: "image", header: "Imagem", image: { isImageColumn: true } },
     { key: "name", header: "Nome" },
     { key: "description", header: "Descrição" },
-    { key: "produtos", header: "Produtos" },
+    { key: "products", header: "Produtos" },
     { key: "isActive", header: "Status",},
-    { key: "order", header: "Ordem", isActionColumn: true },
+    { key: "order", header: "Ordem"},
     { key: "actions", header: "Ações", isActionColumn: true },
   ];
 
