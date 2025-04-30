@@ -57,6 +57,17 @@ export interface BasicData {
   dailyBilling: number;
 }
 
+export interface Category {
+  [key: string]: unknown;
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  products: number;
+  order: number;
+  isActive: boolean;
+}
+
 type Month =
   "jan"
   | "feb"
