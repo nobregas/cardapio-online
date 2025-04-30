@@ -159,6 +159,39 @@ export const products: Product[] = [
   },
 ];
 
+import { Category } from '../types';
+
+export const categories: Category[] = [
+  {
+    id: '1',
+    name: 'Pizzas Tradicionais',
+    image: '/api/placeholder/200/120',
+    description: 'As pizzas mais clássicas e adoradas.',
+    products: 2, 
+    order: 1,
+    isActive: true,
+  },
+  {
+    id: '2',
+    name: 'Pizzas Especiais',
+    image: '/api/placeholder/200/120',
+    description: 'Sabores exclusivos para quem quer algo diferente.',
+    products: 1,
+    order: 2,
+    isActive: true,
+  },
+  {
+    id: '3',
+    name: 'Bebidas',
+    image: '/api/placeholder/200/120',
+    description: 'Refrigerantes e outras bebidas para acompanhar.',
+    products: 1, 
+    order: 3,
+    isActive: true,
+  },
+];
+
+
 export const basicData: BasicData = {
   accessToday: 1524,
   ordersToday: 83,
