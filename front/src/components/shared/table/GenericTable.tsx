@@ -107,6 +107,7 @@ function GenericTable<T extends TableItem>({
         <ActionButtons
           delete={rowActions?.delete}
           edit={rowActions?.edit}
+          visualize={rowActions?.visualize}
           item={item}
         />
       );

@@ -45,7 +45,7 @@ const ActionButtons = ({ delete: deleteAction, edit, item, visualize }: ActionBu
       {visualize && visualize.hasView && (
         <button 
           onClick={() => visualize.onView(item)}
-          className="w-8 h-8 flex items-center justify-center rounded bg-blue-500/10 text-gray-600 hover:bg-gray-500/20 transition-all duration-300"
+          className="w-8 h-8 flex items-center justify-center rounded bg-zinc-900/10 text-zinc-900 hover:bg-zinc-700/20 transition-all duration-300"
           title="Visualizar"
         >
           <Eye size={16} />
