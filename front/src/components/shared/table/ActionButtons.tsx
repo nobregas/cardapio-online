@@ -1,5 +1,5 @@
 import  { useState } from 'react';
-import { Pen, Trash, AlertTriangle } from 'lucide-react';
+import { Pen, Trash, AlertTriangle, Eye } from 'lucide-react';
 
 interface ActionButtonsProps {
   delete?: {
@@ -11,10 +11,14 @@ interface ActionButtonsProps {
     hasEdit: boolean;
     onEdit: (item: any) => void;
   };
+  visualize?: {
+    hasView: boolean;
+    onView: (item: any) => void;
+  };
   item: any;
 }
 
-const ActionButtons = ({ delete: deleteAction, edit, item }: ActionButtonsProps) => {
+const ActionButtons = ({ delete: deleteAction, edit, item, visualize }: ActionButtonsProps) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   
   const handleDeleteClick = () => {
@@ -36,6 +40,19 @@ const ActionButtons = ({ delete: deleteAction, edit, item }: ActionButtonsProps)
   
   return (
     <div className="flex gap-2 relative">
+
+      {/* View button */}
+      {visualize && visualize.hasView && (
+        <button 
+          onClick={() => visualize.onView(item)}
+          className="w-8 h-8 flex items-center justify-center rounded bg-blue-500/10 text-gray-600 hover:bg-gray-500/20 transition-all duration-300"
+          title="Visualizar"
+        >
+          <Eye size={16} />
+        </button>
+      )}
+      
+
       {/* Edit button */}
       {edit && edit.hasEdit && (
         <button 

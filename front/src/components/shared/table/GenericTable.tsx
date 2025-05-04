@@ -51,6 +51,10 @@ interface GenericTableProps<T extends TableItem> {
       hasEdit: boolean;
       onEdit: (item: T) => void;
     };
+    visualize?: {
+      hasView: boolean;
+      onView: (item: T) => void;
+    };
   };
 }
 

@@ -23,7 +23,6 @@ const CategoryTable = ({ categories, title, path }: CategoryTableProps) => {
       className: "bg-gray-100 text-gray-600",
     },
   };
-  
 
   const categoryColumns = [
     { key: "image", header: "Imagem", image: { isImageColumn: true } },
@@ -63,6 +62,12 @@ const CategoryTable = ({ categories, title, path }: CategoryTableProps) => {
           hasEdit: true,
           onEdit: (item) => {
             console.log("Editar categoria:", item);
+          },
+        },
+        visualize: {
+          hasView: true,
+          onView: (item) => {
+            console.log("Visualizar categoria:", item);
           },
         },
       }}
