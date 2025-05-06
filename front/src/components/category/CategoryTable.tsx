@@ -40,6 +40,7 @@ const CategoryTable = ({ categories, title, path }: CategoryTableProps) => {
       columns={categoryColumns}
       title={title}
       viewAllPath={path}
+      viewAllText=""
       emptyMessage="Nenhuma categoria encontrada."
       statusField="isActive"
       statusConfig={statusConfigs}
