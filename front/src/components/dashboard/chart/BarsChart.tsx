@@ -35,7 +35,6 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
-    console.log(windowWidth)
 
     window.addEventListener("resize", handleResize);
     return () => {
