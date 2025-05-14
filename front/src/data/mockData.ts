@@ -1,4 +1,5 @@
-import { Order, Product, StatData, NavItem, BasicData } from '../types';
+import { Order, Product, StatData, NavItem, BasicData, Adicional } from '../types';
+import { Category } from '../types';
 
 export const navItems: NavItem[] = [
   { path: '/', icon: 'fa-chart-pie', label: 'Dashboard', active: true },
@@ -159,8 +160,6 @@ export const products: Product[] = [
   },
 ];
 
-import { Category } from '../types';
-
 export const categories: Category[] = [
   {
     id: '1',
@@ -188,6 +187,39 @@ export const categories: Category[] = [
     products: 1, 
     order: 3,
     isActive: false,
+  },
+];
+
+export const adicionais: Adicional[] = [
+  {
+    id: "1",
+    name: "Borda de Cheddar",
+    price: 7.00,
+    isActive: true
+  },
+  {
+    id: "2",
+    name: "Extra Queijo",
+    price: 7.00,
+    isActive: true
+  },
+  {
+    id: "3",
+    name: "Azeitonas",
+    price: 3.00,
+    isActive: true
+  },
+  {
+    id: "4",
+    name: "Borda de Chocolate",
+    price: 7.00,
+    isActive: true
+  },
+  {
+    id: "5",
+    name: "Borda de Catupiry",
+    price: 8.00,
+    isActive: true
   },
 ];
 

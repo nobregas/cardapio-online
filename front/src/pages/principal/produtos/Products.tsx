@@ -2,12 +2,15 @@
 import ProductsTable from "./_components/ProductsTable";
 import { products } from "../../../data/mockData";
 import PageHeader from "../../../components/layout/PageHeader";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   //const [categoryFilter, setCategoryFilter] = useState<string>("");
   //const [statusFilter, setStatusFilter] = useState<string>("");
 
  // const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const handleSearch = (query: string): void => {
     //setSearchQuery(query);
@@ -16,8 +19,7 @@ const Products = () => {
   };
 
   const handleAddProduct = (): void => {
-    // Lógica para navegar para página de adição
-    console.log("Add product clicked");
+    navigate("/produtos/novo");
   };
 
   const filters = [

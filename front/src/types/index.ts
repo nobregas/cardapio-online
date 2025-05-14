@@ -68,6 +68,14 @@ export interface Category {
   isActive: boolean;
 }
 
+export interface Adicional {
+  [key: string]: unknown;
+  id: string
+  name: string
+  price: number
+  isActive: boolean
+}
+
 type Month =
   "jan"
   | "feb"

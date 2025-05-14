@@ -13,6 +13,7 @@ import Promocoes from "./pages/principal/promocoes/Promocoes";
 import Configuracoes from "./pages/principal/configuracoes/Configuracoes";
 import Pedidos from "./pages/principal/pedidos/Pedidos";
 import Personalizacao from "./pages/principal/personalizacao/Personalizacao";
+import NewProductPage from "./pages/principal/produtos/NewProduct";
 
 function App() {
   return (
@@ -20,12 +21,20 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          {/* - Produtos  */}
           <Route path="/produtos" element={<Products />} />
+          <Route path="/produtos/novo" element={<NewProductPage />} />
+          
           <Route path="/categorias" element={<Categorias />} />
+          
           <Route path="/adicionais" element={<Adicionais />} />
+          
           <Route path="/promocoes" element={<Promocoes />} />
+          
           <Route path="/pedidos" element={<Pedidos />} />
+          
           <Route path="/personalizacao" element={<Personalizacao />} />
+          
           <Route path="/configuracoes" element={<Configuracoes />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
