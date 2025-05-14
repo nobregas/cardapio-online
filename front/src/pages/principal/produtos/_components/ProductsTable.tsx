@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import GenericTable from "../shared/table/GenericTable";
-import { Product } from "../../types";
+import GenericTable from "../../../../components/shared/table/GenericTable";
+import { Product } from "../../../../types";
 
 interface ProductsTableProps {
   products: Product[];

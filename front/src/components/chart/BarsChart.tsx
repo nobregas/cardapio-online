@@ -10,7 +10,7 @@ import {
   Legend,
   Cell,
 } from "recharts";
-import { truncate } from "../../../utils";
+import { truncate } from "../../utils";
 
 const topProductsData = [
   { name: "Pizza Calabresa", vendas: 420 },

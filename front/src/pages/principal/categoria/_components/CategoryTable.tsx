@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Category } from "../../types";
-import GenericTable from "../shared/table/GenericTable";
+import GenericTable from "../../../../components/shared/table/GenericTable";
+import { Category } from "../../../../types";
+
 
 interface CategoryTableProps {
   categories: Category[];

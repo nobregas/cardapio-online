@@ -1,6 +1,7 @@
 import React from "react";
-import { Order } from "../../types";
-import GenericTable from "../shared/table/GenericTable";
+import GenericTable from "../../../../components/shared/table/GenericTable";
+import { Order } from "../../../../types";
+
 
 interface OrdersTableProps {
   orders: Order[];

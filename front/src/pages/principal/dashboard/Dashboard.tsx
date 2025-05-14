@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import StatCard from "../../components/dashboard/StatCard";
-import ChartCard from "../../components/dashboard/chart/ChartCard";
-import { statCards, recentOrders, popularProducts } from "../../data/mockData";
-import ProductCard from "../../components/dashboard/ProductCard";
-import LineChartComponent from "../../components/dashboard/chart/LineChartComponent";
-import BarChartComponent from "../../components/dashboard/chart/BarsChart";
-import DashboardTable from "../../components/dashboard/DashboardTable";
-import PageTitle from "../../components/ui/PageTitle";
+import BarChartComponent from "../../../components/chart/BarsChart";
+import ChartCard from "../../../components/chart/ChartCard";
+import LineChartComponent from "../../../components/chart/LineChartComponent";
+import PageTitle from "../../../components/ui/PageTitle";
+import ProductCard from "../../../components/ui/ProductCard";
+import StatCard from "../../../components/ui/StatCard";
+import { statCards, recentOrders, popularProducts } from "../../../data/mockData";
+import DashboardTable from "./_components/DashboardTable";
+
 
 const Dashboard: React.FC = () => {
   const [linePeriod, setLinePeriod] = useState("monthly");

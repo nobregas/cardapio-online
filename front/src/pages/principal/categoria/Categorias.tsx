@@ -1,6 +1,7 @@
-import CategoryTable from '../../components/category/CategoryTable';
-import PageHeader from '../../components/shared/PageHeader';
-import { categories } from '../../data/mockData';
+import PageHeader from "../../../components/layout/PageHeader";
+import { categories } from "../../../data/mockData";
+import CategoryTable from "./_components/CategoryTable";
+
 
 const Categorias = () => {
   const handleAddProduct = (): void => {

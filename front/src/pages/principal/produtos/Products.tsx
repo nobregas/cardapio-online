@@ -1,7 +1,7 @@
 //import  { useState } from "react";
-import ProductsTable from "../../components/product/ProductsTable";
-import { products } from "../../data/mockData";
-import PageHeader from "../../components/shared/PageHeader";
+import ProductsTable from "./_components/ProductsTable";
+import { products } from "../../../data/mockData";
+import PageHeader from "../../../components/layout/PageHeader";
 
 const Products = () => {
   //const [categoryFilter, setCategoryFilter] = useState<string>("");
@@ -16,7 +16,7 @@ const Products = () => {
   };
 
   const handleAddProduct = (): void => {
-    // Lógica para abrir modal ou navegar para página de adição
+    // Lógica para navegar para página de adição
     console.log("Add product clicked");
   };
 

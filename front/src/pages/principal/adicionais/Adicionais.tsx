@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PageHeader from "../../components/shared/PageHeader";
+import PageHeader from "../../../components/layout/PageHeader";
 
 const Adicionais = () => {
   const [currentTab, setCurrentTab] = useState<string>("1");
