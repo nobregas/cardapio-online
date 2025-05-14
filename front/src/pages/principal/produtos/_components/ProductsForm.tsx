@@ -226,7 +226,7 @@ const ProductsForm = () => {
             <label className="block mb-2 font-medium text-gray-700">
               Status do Produto
             </label>
-            <div className="flex items-center gap-3 mt-4">
+            <div className="flex items-center gap-3 mt-2">
               <SwitchButton
                 checked={productIsActive}
                 onChange={(value) => setProductIsActive(value)}
