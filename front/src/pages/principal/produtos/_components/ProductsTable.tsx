@@ -66,6 +66,12 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
             console.log("Editar produto:", item);
           },
         },
+        visualize: {
+          hasView: true,
+          onView: (item) => {
+            console.log("Visualizar produto:", item);
+          },
+        },
       }}
     />
   );
