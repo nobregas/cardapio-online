@@ -47,7 +47,14 @@ const ProductsForm = () => {
   };
 
   const addAdditional = (id: string) => {
-    setSelectedAddtionals(null);
+    setSelectedAddtionals([
+      {
+        id: id,
+        name: "Borda de Nutella",
+        price: 10.00,
+        isActive: true,
+      },
+    ]);
     console.log(id);
   };
 
@@ -310,7 +317,7 @@ const ProductsForm = () => {
                     <div>
                       <p className="font-medium text-sm">{additional.name}</p>
                       <p className="text-xs text-gray-500">
-                        R$ {additional.price}
+                        R$ {additional.price.toFixed(2)}
                       </p>
                     </div>
                     <button

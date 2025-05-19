@@ -31,6 +31,7 @@ interface PageHeaderProps {
   onTabChange?: (tabId: string) => void;
   activeTab?: string;
   hasAddButton?: boolean;
+  hasSearch?: boolean;
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({
@@ -43,7 +44,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   tabs = [],
   activeTab,
   onTabChange,
-  hasAddButton = true
+  hasAddButton = true,
+  hasSearch = true
 }) => {
   const [currentTab, setCurrentTab] = useState<string>(activeTab || (tabs.length > 0 ? tabs[0].id : ''));
   const [indicatorStyle, setIndicatorStyle] = useState({
@@ -124,6 +126,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       )}
       
       {/* Barra de pesquisa e filtros */}
+      {hasSearch && (
       <div className="flex flex-wrap items-center gap-4">
         <div className="w-full md:w-96">
           <SearchBar 
@@ -143,6 +146,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           ))}
         </div>
       </div>
+      )}
     </div>
   );
 };
