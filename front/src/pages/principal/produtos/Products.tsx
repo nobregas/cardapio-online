@@ -11,7 +11,7 @@ const Products = () => {
  // const [searchQuery, setSearchQuery] = useState<string>("");
 
   const navigate = useNavigate();
-
+  
   const handleSearch = (query: string): void => {
     //setSearchQuery(query);
     // Aqui você implementaria a lógica de busca

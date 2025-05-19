@@ -30,6 +30,7 @@ interface PageHeaderProps {
   tabs?: Tab[];
   onTabChange?: (tabId: string) => void;
   activeTab?: string;
+  hasAddButton?: boolean;
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({
@@ -41,7 +42,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   addButtonLabel = "Adicionar",
   tabs = [],
   activeTab,
-  onTabChange
+  onTabChange,
+  hasAddButton = true
 }) => {
   const [currentTab, setCurrentTab] = useState<string>(activeTab || (tabs.length > 0 ? tabs[0].id : ''));
   const [indicatorStyle, setIndicatorStyle] = useState({
@@ -86,9 +88,9 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       {/* Título e botão de adicionar */}
       <div className="flex justify-between items-center mb-4">
         <PageTitle title={title} />
-        <Button variant={"primary"} size={"lg"} onClick={onAddClick}>
+        {hasAddButton && <Button variant={"primary"} size={"lg"} onClick={onAddClick}>
           {addButtonLabel}
-        </Button>
+        </Button>}
       </div>
       
       {/* Abas de navegação */}
