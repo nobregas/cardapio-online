@@ -12,9 +12,9 @@ const Estabelecimento = () => {
     cep: "01310-100",
     descricao: "A Pizza do Beto oferece as melhores pizzas artesanais da cidade, com ingredientes selecionados e massas preparadas no dia."
   });
-  const [logo, setLogo] = useState(null);
+  const [logo, setLogo] = useState<string | null>(null);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setFormData({
       ...formData,
@@ -22,12 +22,12 @@ const Estabelecimento = () => {
     });
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setLogo(reader.result);
+        setLogo(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -41,7 +41,10 @@ const Estabelecimento = () => {
   };
 
   const triggerFileInput = () => {
-    document.getElementById('logo-upload').click();
+    const logo = document.getElementById('logo-upload');
+    if (logo != null) {
+      logo.click()
+    }
   };
 
   return (
