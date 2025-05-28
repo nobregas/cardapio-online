@@ -79,3 +79,29 @@ button {
     transform: scale(1);
   }
 }
+
+.divider {
+  text-align: center;
+  margin: 30px 0;
+  position: relative;
+  color: var(--gray);
+  font-size: 14px;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--primary);
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e1e5e9;
+  z-index: 1;
+}
+
+.google { color: #db4437; }
+.facebook { color: #4267b2; }
