@@ -9,7 +9,7 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  
+
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
@@ -198,6 +198,13 @@ const SignIn = () => {
                 </a>
               </div>
             </form>
+            <p className="text-center text-gray-600 mt-6">
+              Ainda não tem uma conta?
+              <span className="mr-1"> </span>
+              <a href="#" className="text-red-500 hover:underline" onClick={() => navigate("/sign-up")}>
+                Cadastre-se
+              </a>
+            </p>
           </div>
         </div>
       </div>
