@@ -180,7 +180,7 @@ const SignIn = () => {
               </button>
 
               <div className="divider">
-                <span className="text-gray-400 bg-white px-5 relative z-[2]">ou entre com</span>
+                <span className="text-gray-400 bg-white px-5 relative z-[2]">ou cadastre-se com</span>
               </div>
 
               <div className="flex space-x-4">

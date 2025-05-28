@@ -15,6 +15,7 @@ import Pedidos from "./pages/principal/pedidos/Pedidos";
 import Personalizacao from "./pages/principal/personalizacao/Personalizacao";
 import NewProductPage from "./pages/principal/produtos/NewProduct";
 import SignIn from "./pages/auth/SignIn";
+import SignUp from "./pages/auth/SignUp";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Routes>
         {/* Rota sem Layout */}
         <Route path="/login" element={<SignIn />} />
+        <Route path="/register" element={<SignUp />} />
 
         {/* Rota pai com Layout */}
         <Route path="/" element={<Layout />}>

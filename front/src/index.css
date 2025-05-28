@@ -24,6 +24,10 @@ button {
   );
 }
 
+.field-error {
+  @apply text-red-700;
+}
+
 .auth-bg::before {
   content: "";
   position: absolute;
