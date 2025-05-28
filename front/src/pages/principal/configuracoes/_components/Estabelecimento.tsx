@@ -2,15 +2,15 @@ import { useState } from "react";
 
 const Estabelecimento = () => {
   const [formData, setFormData] = useState({
-    nome: "Pizza do Beto",
-    cnpj: "12.345.678/0001-90",
-    telefone: "(11) 9876-5432",
-    email: "contato@pizzadobeto.com.br",
-    endereco: "Av. Paulista, 1000",
-    cidade: "São Paulo",
-    estado: "SP",
-    cep: "01310-100",
-    descricao: "A Pizza do Beto oferece as melhores pizzas artesanais da cidade, com ingredientes selecionados e massas preparadas no dia."
+    nome: "",
+    cnpj: "",
+    telefone: "",
+    email: "",
+    endereco: "",
+    cidade: "",
+    estado: "",
+    cep: "",
+    descricao: ""
   });
   const [logo, setLogo] = useState<string | null>(null);
 
@@ -70,6 +70,7 @@ const Estabelecimento = () => {
             type="text"
             id="store-name"
             className="border rounded p-2"
+            placeholder="Ex: Restaurante Sabor da Casa"
             value={formData.nome}
             onChange={handleInputChange}
             required
@@ -83,6 +84,7 @@ const Estabelecimento = () => {
             type="text"
             id="store-document"
             className="border rounded p-2"
+            placeholder="00.000.000/0000-00"
             value={formData.cnpj}
             onChange={handleInputChange}
             required
@@ -99,6 +101,7 @@ const Estabelecimento = () => {
             type="tel"
             id="store-phone"
             className="border rounded p-2"
+            placeholder="(11) 99999-9999"
             value={formData.telefone}
             onChange={handleInputChange}
             required
@@ -112,6 +115,7 @@ const Estabelecimento = () => {
             type="email"
             id="store-email"
             className="border rounded p-2"
+            placeholder="contato@meurestaurante.com"
             value={formData.email}
             onChange={handleInputChange}
             required
@@ -161,6 +165,7 @@ const Estabelecimento = () => {
           type="text"
           id="store-address"
           className="border rounded p-2 w-full"
+          placeholder="Rua das Flores, 123, Centro"
           value={formData.endereco}
           onChange={handleInputChange}
           required
@@ -176,6 +181,7 @@ const Estabelecimento = () => {
             type="text"
             id="store-city"
             className="border rounded p-2"
+            placeholder="São Paulo"
             value={formData.cidade}
             onChange={handleInputChange}
             required
@@ -189,6 +195,7 @@ const Estabelecimento = () => {
             type="text"
             id="store-state"
             className="border rounded p-2"
+            placeholder="SP"
             value={formData.estado}
             onChange={handleInputChange}
             required
@@ -202,6 +209,7 @@ const Estabelecimento = () => {
             type="text"
             id="store-zip"
             className="border rounded p-2"
+            placeholder="00000-000"
             value={formData.cep}
             onChange={handleInputChange}
             required
@@ -216,6 +224,7 @@ const Estabelecimento = () => {
         <textarea
           id="store-description"
           className="border rounded p-2 w-full h-32"
+          placeholder="Descreva seu estabelecimento, especialidades, ambiente, horário de funcionamento..."
           value={formData.descricao}
           onChange={handleInputChange}
         />
