@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopNavbar from './TopNavbar';
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -20,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="flex flex-col flex-1">
         <TopNavbar toggleSidebar={toggleSidebar} />
         <main className="p-5 flex-1">
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>
