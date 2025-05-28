@@ -14,31 +14,31 @@ import Configuracoes from "./pages/principal/configuracoes/Configuracoes";
 import Pedidos from "./pages/principal/pedidos/Pedidos";
 import Personalizacao from "./pages/principal/personalizacao/Personalizacao";
 import NewProductPage from "./pages/principal/produtos/NewProduct";
+import SignIn from "./pages/auth/SignIn";
 
 function App() {
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          {/* - Produtos  */}
-          <Route path="/produtos" element={<Products />} />
-          <Route path="/produtos/novo" element={<NewProductPage />} />
-          
-          <Route path="/categorias" element={<Categorias />} />
-          
-          <Route path="/adicionais" element={<Adicionais />} />
-          
-          <Route path="/promocoes" element={<Promocoes />} />
-          
-          <Route path="/pedidos" element={<Pedidos />} />
-          
-          <Route path="/personalizacao" element={<Personalizacao />} />
-          
-          <Route path="/configuracoes" element={<Configuracoes />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Layout>
+      <Routes>
+        {/* Rota sem Layout */}
+        <Route path="/login" element={<SignIn />} />
+
+        {/* Rota pai com Layout */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="produtos" element={<Products />} />
+          <Route path="produtos/novo" element={<NewProductPage />} />
+          <Route path="categorias" element={<Categorias />} />
+          <Route path="adicionais" element={<Adicionais />} />
+          <Route path="promocoes" element={<Promocoes />} />
+          <Route path="pedidos" element={<Pedidos />} />
+          <Route path="personalizacao" element={<Personalizacao />} />
+          <Route path="configuracoes" element={<Configuracoes />} />
+        </Route>
+
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </Router>
   );
 }
