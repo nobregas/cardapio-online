@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface TopNavbarProps {
   toggleSidebar: () => void;
@@ -7,6 +7,8 @@ interface TopNavbarProps {
 
 const TopNavbar: React.FC<TopNavbarProps> = ({ toggleSidebar }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   return (
     <div className="bg-white py-4 px-5 flex justify-between items-center shadow-sm">
@@ -51,7 +53,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ toggleSidebar }) => {
             </Link>
             <button
               className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-              onClick={() => console.log("Logout")}
+              onClick={() => navigate('/login')}
             >
               Sair
             </button>
