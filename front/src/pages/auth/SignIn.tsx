@@ -201,7 +201,7 @@ const SignIn = () => {
             <p className="text-center text-gray-600 mt-6">
               Ainda não tem uma conta?
               <span className="mr-1"> </span>
-              <a href="#" className="text-red-500 hover:underline" onClick={() => navigate("/sign-up")}>
+              <a href="#" className="text-red-500 hover:underline" onClick={() => navigate("/register")}>
                 Cadastre-se
               </a>
             </p>
