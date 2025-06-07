@@ -61,7 +61,7 @@ Install cardapio-online from the source and install dependencies:
 
 ```bash
 # Clone the repository
-git clone https://github.com/seu-usuario/cardapio-online
+git clone https://github.com/nobregas/cardapio-online
 ```
 
 ```bash
