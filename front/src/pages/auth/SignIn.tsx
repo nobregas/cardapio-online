@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { LoginDTO, login } from "../../services/auth.service";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -14,21 +15,23 @@ const SignIn = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setErrorMessage("");
     setSuccessMessage("");
 
-    setTimeout(() => {
+    try {
+      const loginData: LoginDTO = { email, password };
+      await login(loginData);
+      setSuccessMessage("Login realizado com sucesso!");
+      navigate("/");
+    } catch (error) {
+      console.log("Error in handleSubmit: ", error);
+      setErrorMessage("Email ou senha incorretos");
+    } finally {
       setLoading(false);
-      if (email === "admin@teste.com" && password === "123456") {
-        setSuccessMessage("Login realizado com sucesso!");
-        navigate("/");
-      } else {
-        setErrorMessage("Email ou senha incorretos");
-      }
-    }, 1500);
+    }
   };
 
   return (
@@ -97,10 +100,10 @@ const SignIn = () => {
         <div className="flex flex-col justify-center items-center w-full p-8">
           <div className="w-full max-w-md">
             <div className="flex flex-col items-center">
-            <h2 className="text-3xl font-bold mb-2">Bem-vindo</h2>
-            <p className="text-gray-600 mb-6">
-              Acesse sua conta para continuar
-            </p>
+              <h2 className="text-3xl font-bold mb-2">Bem-vindo</h2>
+              <p className="text-gray-600 mb-6">
+                Acesse sua conta para continuar
+              </p>
             </div>
 
             {errorMessage && (
@@ -180,7 +183,9 @@ const SignIn = () => {
               </button>
 
               <div className="divider">
-                <span className="text-gray-400 bg-white px-5 relative z-[2]">ou cadastre-se com</span>
+                <span className="text-gray-400 bg-white px-5 relative z-[2]">
+                  ou cadastre-se com
+                </span>
               </div>
 
               <div className="flex space-x-4">
@@ -201,7 +206,11 @@ const SignIn = () => {
             <p className="text-center text-gray-600 mt-6">
               Ainda não tem uma conta?
               <span className="mr-1"> </span>
-              <a href="#" className="text-red-500 hover:underline" onClick={() => navigate("/register")}>
+              <a
+                href="#"
+                className="text-red-500 hover:underline"
+                onClick={() => navigate("/register")}
+              >
                 Cadastre-se
               </a>
             </p>

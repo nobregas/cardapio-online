@@ -15,6 +15,16 @@ button {
   @apply cursor-pointer;
 }
 
+input[type="checkbox"] {
+  @apply cursor-pointer;
+}
+
+input,
+select,
+textarea {
+  @apply bg-white;
+}
+
 .auth-bg {
   @apply min-h-screen flex items-center justify-center relative overflow-hidden;
   background: linear-gradient(
@@ -97,7 +107,7 @@ input[type="checkbox"] {
 }
 
 .divider::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 0;
@@ -107,5 +117,9 @@ input[type="checkbox"] {
   z-index: 1;
 }
 
-.google { color: #db4437; }
-.facebook { color: #4267b2; }
+.google {
+  color: #db4437;
+}
+.facebook {
+  color: #4267b2;
+}

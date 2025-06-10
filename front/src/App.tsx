@@ -16,32 +16,109 @@ import Personalizacao from "./pages/principal/personalizacao/Personalizacao";
 import NewProductPage from "./pages/principal/produtos/NewProduct";
 import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/SignUp";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { AuthProvider } from "./components/auth/AuthContext";
+import FirstSteps from "./pages/auth/primeiros-passos/FirstSteps";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Rota sem Layout */}
-        <Route path="/login" element={<SignIn />} />
-        <Route path="/register" element={<SignUp />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Rota sem Layout */}
+          <Route path="/login" element={<SignIn />} />
+          <Route path="/register" element={<SignUp />} />
 
-        {/* Rota pai com Layout */}
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="produtos" element={<Products />} />
-          <Route path="produtos/novo" element={<NewProductPage />} />
-          <Route path="categorias" element={<Categorias />} />
-          <Route path="adicionais" element={<Adicionais />} />
-          <Route path="promocoes" element={<Promocoes />} />
-          <Route path="pedidos" element={<Pedidos />} />
-          <Route path="personalizacao" element={<Personalizacao />} />
-          <Route path="configuracoes" element={<Configuracoes />} />
-        </Route>
+          <Route
+            path="/first-steps"
+            element={
+              <ProtectedRoute>
+                <FirstSteps />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+          {/* Rota pai com Layout */}
+          <Route path="/" element={<Layout />}>
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="produtos"
+              element={
+                <ProtectedRoute>
+                  <Products />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="produtos/novo"
+              element={
+                <ProtectedRoute>
+                  <NewProductPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="categorias"
+              element={
+                <ProtectedRoute>
+                  <Categorias />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="adicionais"
+              element={
+                <ProtectedRoute>
+                  <Adicionais />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="promocoes"
+              element={
+                <ProtectedRoute>
+                  <Promocoes />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="pedidos"
+              element={
+                <ProtectedRoute>
+                  <Pedidos />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="personalizacao"
+              element={
+                <ProtectedRoute>
+                  <Personalizacao />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="configuracoes"
+              element={
+                <ProtectedRoute>
+                  <Configuracoes />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { registerOwner, RegisterOwnerDTO } from "../../services/auth.service";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -7,7 +8,6 @@ const SignUp = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [restaurantName, setRestaurantName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -23,26 +23,39 @@ const SignUp = () => {
     lastName: "",
     email: "",
     phone: "",
-    restaurantName: "",
     password: "",
     confirmPassword: "",
     terms: "",
   });
+
+  const formatPhone = (value: string) => {
+    if (!value) return "";
+
+    const digitsOnly = value.replace(/\D/g, "");
+
+    const truncatedDigits = digitsOnly.slice(0, 11);
+
+    if (truncatedDigits.length > 10) {
+      return truncatedDigits.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+    }
+    if (truncatedDigits.length > 6) {
+      return truncatedDigits.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+    }
+    if (truncatedDigits.length > 2) {
+      return truncatedDigits.replace(/(\d{2})(\d+)/, "($1) $2");
+    }
+    if (truncatedDigits.length > 0) {
+      return truncatedDigits.replace(/(\d*)/, "($1");
+    }
+
+    return truncatedDigits;
+  };
 
   const togglePasswordVisibility = (field: string) => {
     if (field === "password") {
       setShowPassword((prev) => !prev);
     } else if (field === "confirmPassword") {
       setShowConfirmPassword((prev) => !prev);
-    }
-  };
-
-  const formatPhone = (value: string) => {
-    const numbers = value.replace(/\D/g, "");
-    if (numbers.length <= 10) {
-      return numbers.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
-    } else {
-      return numbers.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
     }
   };
 
@@ -60,22 +73,21 @@ const SignUp = () => {
           ? "Email inválido"
           : "";
         break;
-      case "phone":
-        error = !/^\(\d{2}\)\s\d{4,5}-\d{4}$/.test(value)
-          ? "Telefone inválido"
-          : "";
+      case "phone": {
+        const digitsOnly = value.replace(/\D/g, "");
+        if (digitsOnly.length < 10) {
+          error = "Telefone inválido. Deve conter 10 ou 11 dígitos.";
+        } else {
+          error = "";
+        }
         break;
-      case "restaurantName":
-        error =
-          value.trim() === "" ? "Nome do restaurante é obrigatório" : "";
-        break;
+      }
       case "password":
         error =
-          value.length < 6 ? "Senha deve ter pelo menos 6 caracteres" : "";
+          value.length < 8 ? "Senha deve ter pelo menos 8 caracteres" : "";
         break;
       case "confirmPassword":
-        error =
-          value !== password ? "Senhas não coincidem" : "";
+        error = value !== password ? "Senhas não coincidem" : "";
         break;
       default:
         break;
@@ -107,7 +119,7 @@ const SignUp = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setErrorMessage("");
@@ -117,7 +129,6 @@ const SignUp = () => {
       lastName: "",
       email: "",
       phone: "",
-      restaurantName: "",
       password: "",
       confirmPassword: "",
       terms: "",
@@ -127,9 +138,11 @@ const SignUp = () => {
     const isLastNameValid = validateField("lastName", lastName);
     const isEmailValid = validateField("email", email);
     const isPhoneValid = validateField("phone", phone);
-    const isRestaurantNameValid = validateField("restaurantName", restaurantName);
     const isPasswordValid = validateField("password", password);
-    const isConfirmPasswordValid = validateField("confirmPassword", confirmPassword);
+    const isConfirmPasswordValid = validateField(
+      "confirmPassword",
+      confirmPassword
+    );
 
     if (!agreeTerms) {
       setErrors((prev) => ({
@@ -143,7 +156,6 @@ const SignUp = () => {
       !isLastNameValid ||
       !isEmailValid ||
       !isPhoneValid ||
-      !isRestaurantNameValid ||
       !isPasswordValid ||
       !isConfirmPasswordValid ||
       !agreeTerms
@@ -153,22 +165,44 @@ const SignUp = () => {
       return;
     }
 
-    setTimeout(() => {
-      setLoading(false);
-      console.log("Registration Data:", {
-        firstName,
-        lastName,
-        email,
-        phone,
-        restaurantName,
-        password,
-      });
+    const fullname = `${firstName} ${lastName}`;
+    const cleanedPhone = phone.replace(/\D/g, "");
 
+    const userData: RegisterOwnerDTO = {
+      name: fullname,
+      email,
+      phone: cleanedPhone,
+      password,
+    };
+
+    try {
+      console.log("Enviando para a API:", userData);
+      await registerOwner(userData);
+
+      setLoading(false);
       setSuccessMessage("Conta criada com sucesso! Redirecionando...");
+
       setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-    }, 1500);
+        navigate("/first-steps");
+      }, 1500);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any | unknown) {
+      console.log("Error in registerOwner: ", error);
+      setLoading(false);
+
+      // Extrair mensagem de erro específica
+      let errorMsg = "Ocorreu um erro ao criar a conta. Tente novamente.";
+
+      if (error?.response?.data?.message) {
+        errorMsg = error.response.data.message;
+      } else if (error?.response?.data?.error) {
+        errorMsg = error.response.data.error;
+      } else if (error?.message) {
+        errorMsg = error.message;
+      }
+
+      setErrorMessage(errorMsg);
+    }
   };
 
   return (
@@ -229,7 +263,8 @@ const SignUp = () => {
               Cardapio Online
             </h1>
             <p className="text-center text-[16px] opacity-[0.9] leading-[1.5] brand-subtitle">
-              Junte-se a centenas de restaurantes que já usam nossa plataforma para gerenciar seus negócios com eficiência.
+              Junte-se a centenas de restaurantes que já usam nossa plataforma
+              para gerenciar seus negócios com eficiência.
             </p>
           </div>
         </div>
@@ -238,7 +273,9 @@ const SignUp = () => {
         <div className="flex flex-col justify-center items-center w-full p-5 register-right">
           <div className="w-full max-w-md">
             <div className="flex flex-col items-center register-header">
-              <h2 className="text-3xl font-bold mb-2 register-title">Criar Conta</h2>
+              <h2 className="text-3xl font-bold mb-2 register-title">
+                Criar Conta
+              </h2>
               <p className="text-gray-600 mb-6 register-subtitle">
                 Preencha os dados para começar
               </p>
@@ -261,7 +298,10 @@ const SignUp = () => {
             <form onSubmit={handleSubmit} className="space-y-4 register-form">
               <div className="grid grid-cols-2 gap-4 form-row">
                 <div className="form-group">
-                  <label htmlFor="firstName" className="block font-medium form-label">
+                  <label
+                    htmlFor="firstName"
+                    className="block font-medium form-label"
+                  >
                     Nome
                   </label>
                   <input
@@ -287,7 +327,10 @@ const SignUp = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="lastName" className="block font-medium form-label">
+                  <label
+                    htmlFor="lastName"
+                    className="block font-medium form-label"
+                  >
                     Sobrenome
                   </label>
                   <input
@@ -341,7 +384,10 @@ const SignUp = () => {
 
               <div className="grid grid-cols-2 gap-4 form-row">
                 <div className="form-group">
-                  <label htmlFor="phone" className="block font-medium form-label">
+                  <label
+                    htmlFor="phone"
+                    className="block font-medium form-label"
+                  >
                     Telefone
                   </label>
                   <input
@@ -350,14 +396,16 @@ const SignUp = () => {
                     className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 form-control ${
                       errors.phone ? "error" : ""
                     }`}
-                    placeholder="(11) 99999-9999"
+                    placeholder="(83) 99999-9999"
                     value={phone}
                     onChange={(e) => {
-                      setPhone(formatPhone(e.target.value));
-                      validateField("phone", formatPhone(e.target.value));
+                      const formattedPhone = formatPhone(e.target.value);
+                      setPhone(formattedPhone);
+                      validateField("phone", formattedPhone);
                     }}
                     onBlur={(e) => validateField("phone", e.target.value)}
                     required
+                    maxLength={15}
                   />
                   {errors.phone && (
                     <div className="field-error" style={{ display: "block" }}>
@@ -365,36 +413,13 @@ const SignUp = () => {
                     </div>
                   )}
                 </div>
-
-                <div className="form-group">
-                  <label htmlFor="restaurantName" className="block font-medium form-label">
-                    Nome do Restaurante
-                  </label>
-                  <input
-                    id="restaurantName"
-                    type="text"
-                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 form-control ${
-                      errors.restaurantName ? "error" : ""
-                    }`}
-                    placeholder="Meu Restaurante"
-                    value={restaurantName}
-                    onChange={(e) => {
-                      setRestaurantName(e.target.value);
-                      validateField("restaurantName", e.target.value);
-                    }}
-                    onBlur={(e) => validateField("restaurantName", e.target.value)}
-                    required
-                  />
-                  {errors.restaurantName && (
-                    <div className="field-error" style={{ display: "block" }}>
-                      {errors.restaurantName}
-                    </div>
-                  )}
-                </div>
               </div>
 
               <div className="form-group">
-                <label htmlFor="password" className="block font-medium form-label">
+                <label
+                  htmlFor="password"
+                  className="block font-medium form-label"
+                >
                   Senha
                 </label>
                 <div className="relative">
@@ -456,7 +481,10 @@ const SignUp = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="confirmPassword" className="block font-medium form-label">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block font-medium form-label"
+                >
                   Confirmar Senha
                 </label>
                 <div className="relative">
@@ -472,7 +500,9 @@ const SignUp = () => {
                       setConfirmPassword(e.target.value);
                       validateField("confirmPassword", e.target.value);
                     }}
-                    onBlur={(e) => validateField("confirmPassword", e.target.value)}
+                    onBlur={(e) =>
+                      validateField("confirmPassword", e.target.value)
+                    }
                     required
                   />
                   <button
@@ -508,11 +538,19 @@ const SignUp = () => {
                 />
                 <label htmlFor="agreeTerms" className="text-gray-600 text-sm">
                   Eu concordo com os{" "}
-                  <a href="#" target="_blank" className="text-red-500 hover:underline">
+                  <a
+                    href="#"
+                    target="_blank"
+                    className="text-red-500 hover:underline"
+                  >
                     Termos de Uso
                   </a>{" "}
                   e{" "}
-                  <a href="#" target="_blank" className="text-red-500 hover:underline">
+                  <a
+                    href="#"
+                    target="_blank"
+                    className="text-red-500 hover:underline"
+                  >
                     Política de Privacidade
                   </a>
                 </label>
@@ -529,7 +567,10 @@ const SignUp = () => {
                 disabled={loading}
               >
                 {loading ? (
-                  <span className="loading" style={{ display: "inline-block" }}></span>
+                  <span
+                    className="loading"
+                    style={{ display: "inline-block" }}
+                  ></span>
                 ) : (
                   "Criar Conta"
                 )}
@@ -558,7 +599,11 @@ const SignUp = () => {
             </form>
             <p className="text-center text-gray-600 mt-6 login-link">
               Já tem uma conta?{" "}
-              <a href="#" className="text-red-500 hover:underline" onClick={() => navigate("/login")}>
+              <a
+                href="#"
+                className="text-red-500 hover:underline"
+                onClick={() => navigate("/login")}
+              >
                 Fazer login
               </a>
             </p>
