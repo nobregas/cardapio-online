@@ -68,16 +68,28 @@ export interface Category {
   isActive: boolean;
 }
 
+export interface ICategory {
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+  order: number;
+  isActive: boolean;
+  restaurant: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Adicional {
   [key: string]: unknown;
-  id: string
-  name: string
-  price: number
-  isActive: boolean
+  id: string;
+  name: string;
+  price: number;
+  isActive: boolean;
 }
 
 type Month =
-  "jan"
+  | "jan"
   | "feb"
   | "mar"
   | "apr"
@@ -91,3 +103,15 @@ type Month =
   | "dec";
 
 type Color = "blue" | "green" | "red" | "yellow" | "purple" | "orange";
+
+export interface Message {
+  id: string;
+  text: string;
+  sender: "user" | "ai";
+  timestamp: Date;
+}
+
+export interface ChatHistory {
+  role: "user" | "model";
+  parts: { text: string }[];
+}

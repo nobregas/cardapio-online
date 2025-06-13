@@ -19,7 +19,7 @@ interface ColumnConfig<T extends TableItem> {
   key: keyof T | string;
   header: string;
   toggleField?: boolean;
-  onToggle?: (checked: boolean) => void;
+  onToggle?: (item: T, checked: boolean) => void;
   render?: (item: T) => React.ReactNode;
   isActionColumn?: boolean;
   image?: {
@@ -99,7 +99,14 @@ function GenericTable<T extends TableItem>({
       const key = column.key as string;
       const isActive = Boolean(item[key]);
 
-      return <SwitchButton checked={isActive} onChange={column.onToggle} />;
+      return (
+        <SwitchButton
+          checked={isActive}
+          onChange={(newCheckedState) => {
+            console.log(newCheckedState);
+          }}
+        />
+      );
     }
 
     if (column.isActionColumn) {

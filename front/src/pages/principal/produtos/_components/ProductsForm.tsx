@@ -51,7 +51,7 @@ const ProductsForm = () => {
       {
         id: id,
         name: "Borda de Nutella",
-        price: 10.00,
+        price: 10.0,
         isActive: true,
       },
     ]);
@@ -143,8 +143,8 @@ const ProductsForm = () => {
                 ))}
               </select>
               <a
-                href="#"
-                className="flex items-center mt-1 text-orange-500 hover:text-orange-800 font-medium"
+                onClick={() => navigate("/categorias/novo")}
+                className="flex items-center mt-1 text-orange-500 hover:text-orange-800 font-medium cursor-pointer"
               >
                 <i className="fas fa-plus-circle mr-1"></i> Criar nova categoria
               </a>

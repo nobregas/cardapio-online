@@ -10,7 +10,15 @@ interface Step5Props {
   theme: string;
   phone: string;
   workingDays: string[];
-  currentTheme: { bg: string; hover: string };
+  currentTheme: {
+    bg: string;
+    hover: string;
+    ring?: string;
+    border?: string;
+    text?: string;
+  };
+  isSubmitting?: boolean;
+  error?: string | null;
 }
 
 const containerVariants = {
@@ -106,6 +114,8 @@ const Step5Finalizar: FC<Step5Props> = ({
   phone,
   workingDays,
   currentTheme,
+  isSubmitting = false,
+  error,
 }) => {
   const summaryItems = [
     {
@@ -167,14 +177,30 @@ const Step5Finalizar: FC<Step5Props> = ({
         className="text-3xl font-bold text-gray-800 mb-4"
         variants={itemVariants}
       >
-        Tudo Pronto!
+        {isSubmitting ? "Criando seu restaurante..." : "Tudo Pronto!"}
       </motion.h2>
 
       {/* Descrição */}
       <motion.p className="text-gray-600 text-lg mb-8" variants={itemVariants}>
-        Parabéns! Seu restaurante está configurado e pronto para começar a
-        receber pedidos.
+        {isSubmitting
+          ? "Aguarde enquanto configuramos tudo para você..."
+          : "Parabéns! Seu restaurante está configurado e pronto para começar a receber pedidos."}
       </motion.p>
+
+      {/* Exibir erro se houver */}
+      {error && (
+        <motion.div
+          className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg mb-6"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="flex items-center justify-center">
+            <i className="fas fa-exclamation-triangle mr-2"></i>
+            <span>{error}</span>
+          </div>
+        </motion.div>
+      )}
 
       {/* Resumo */}
       <motion.div
@@ -224,45 +250,80 @@ const Step5Finalizar: FC<Step5Props> = ({
       </motion.div>
 
       {/* Texto final */}
-      <motion.p className="text-gray-600 mb-6" variants={itemVariants}>
-        O próximo passo é adicionar seus produtos ao cardápio e começar a
-        vender!
-      </motion.p>
+      {!isSubmitting && (
+        <motion.p className="text-gray-600 mb-6" variants={itemVariants}>
+          O próximo passo é adicionar seus produtos ao cardápio e começar a
+          vender!
+        </motion.p>
+      )}
 
       {/* Botão final */}
       <motion.button
         onClick={finishSetup}
-        className={`w-full md:w-auto px-8 py-4 text-lg font-bold ${currentTheme.bg} ${currentTheme.hover} text-white rounded-lg shadow-md transition-all duration-200`}
+        disabled={isSubmitting}
+        className={`w-full md:w-auto px-8 py-4 text-lg font-bold ${currentTheme.bg} ${currentTheme.hover} text-white rounded-lg shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}
         variants={buttonVariants}
         initial="initial"
-        whileHover="hover"
-        whileTap="tap"
-        whileInView={{
-          boxShadow: [
-            "0 4px 8px rgba(0,0,0,0.1)",
-            "0 8px 16px rgba(0,0,0,0.15)",
-            "0 4px 8px rgba(0,0,0,0.1)",
-          ],
-          transition: {
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          },
-        }}
+        whileHover={!isSubmitting ? "hover" : "initial"}
+        whileTap={!isSubmitting ? "tap" : "initial"}
+        whileInView={
+          !isSubmitting
+            ? {
+                boxShadow: [
+                  "0 4px 8px rgba(0,0,0,0.1)",
+                  "0 8px 16px rgba(0,0,0,0.15)",
+                  "0 4px 8px rgba(0,0,0,0.1)",
+                ],
+                transition: {
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                },
+              }
+            : {}
+        }
       >
-        <motion.i
-          className="fas fa-rocket mr-2"
-          animate={{
-            rotate: [0, 10, -10, 0],
-            transition: {
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-            },
-          }}
-        />
-        Ir para o Dashboard
+        {isSubmitting ? (
+          <>
+            <motion.i
+              className="fas fa-spinner mr-2"
+              animate={{ rotate: 360 }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+            Criando Restaurante...
+          </>
+        ) : (
+          <>
+            <motion.i
+              className="fas fa-rocket mr-2"
+              animate={{
+                rotate: [0, 10, -10, 0],
+                transition: {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                },
+              }}
+            />
+            Ir para o Dashboard
+          </>
+        )}
       </motion.button>
+
+      {isSubmitting && (
+        <motion.p
+          className="text-sm text-gray-600 mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          Aguarde, estamos configurando seu restaurante...
+        </motion.p>
+      )}
     </motion.section>
   );
 };

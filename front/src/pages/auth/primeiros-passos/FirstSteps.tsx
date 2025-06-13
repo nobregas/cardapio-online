@@ -1,5 +1,7 @@
 import { useState, FC, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRestaurant } from "../../../hooks/useRestaurant";
+import { CreateRestaurantDTO } from "../../../services/restaurant.service";
 import Step1DadosBasicos from "./_components/Step1DadosBasicos";
 import Step5Finalizar from "./_components/Step5Finalizar";
 import Step4Pagamento from "./_components/Step4Pagamento";
@@ -31,8 +33,11 @@ interface ThemeColors {
 
 const PrimeirosPassos: FC = () => {
   const navigate = useNavigate();
+  const { createRestaurant, loading, error, clearError } = useRestaurant();
+
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [restaurantName, setRestaurantName] = useState("");
   const [logo, setLogo] = useState<string | null>(null);
@@ -222,7 +227,7 @@ const PrimeirosPassos: FC = () => {
             setTheme={setTheme}
             currentTheme={currentTheme}
             errors={{
-              workingDays: undefined,
+              workingDays: errors.workingDays,
             }}
             daysOfWeek={daysOfWeek}
             themeColors={themeColors}
@@ -256,6 +261,8 @@ const PrimeirosPassos: FC = () => {
             phone={phone}
             workingDays={workingDays}
             currentTheme={currentTheme}
+            isSubmitting={isSubmitting}
+            error={error}
           />
         );
       default:
@@ -264,8 +271,12 @@ const PrimeirosPassos: FC = () => {
   };
 
   const nextStep = () => {
+    if (error) {
+      clearError();
+    }
+
     if (validateStep(currentStep)) {
-      setCompletedSteps((prev) => [...new Set([...prev, currentStep])]); // Evita duplicatas
+      setCompletedSteps((prev) => [...new Set([...prev, currentStep])]);
       if (currentStep < steps.length) {
         setCurrentStep((prev) => prev + 1);
       }
@@ -287,33 +298,66 @@ const PrimeirosPassos: FC = () => {
     }
   };
 
-  const finishSetup = (e: FormEvent) => {
+  const finishSetup = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("DADOS FINAIS:", {
-      restaurantName,
-      logo,
-      cnpj,
-      phone,
-      email,
-      address,
-      city,
-      state,
-      cep,
-      description,
-      workingDays,
-      language,
-      currency,
-      theme,
-      openTime,
-      closeTime,
-      onlinePayment,
-      deliveryPayment,
-      acceptsCash,
-      acceptsCard,
-      acceptsPix,
-    });
 
-    navigate("/");
+    if (!validateStep(1) || !validateStep(2) || !validateStep(3)) {
+      alert("Por favor, verifique os dados preenchidos nos passos anteriores.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const restaurantData: CreateRestaurantDTO = {
+        name: restaurantName,
+        email,
+        phone: phone.replace(/\D/g, ""),
+        cnpj: cnpj.replace(/\D/g, ""),
+        logo: "logo",
+        description: description || undefined,
+        address: {
+          street: address,
+          city,
+          state,
+          zipCode: cep.replace(/\D/g, ""),
+        },
+      };
+
+      const paymentMethods = {
+        onlinePayment,
+        deliveryPayment,
+        acceptsCash,
+        acceptsCard,
+        acceptsPix,
+      };
+
+      const settings = {
+        language,
+        currency,
+        theme,
+        workingDays,
+        workingHours: {
+          open: openTime,
+          close: closeTime,
+        },
+      };
+      console.log(settings, paymentMethods);
+
+      console.log("Enviando dados do restaurante:", restaurantData);
+
+      const createdRestaurant = await createRestaurant(restaurantData);
+
+      if (createdRestaurant) {
+        console.log("Restaurante criado com sucesso:", createdRestaurant);
+
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      console.error("Erro ao criar restaurante:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const currentTheme = themeColors[theme];
@@ -342,6 +386,22 @@ const PrimeirosPassos: FC = () => {
           </p>
         </div>
 
+        {/* Exibir erro global se houver */}
+        {error && currentStep !== 5 && (
+          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            <div className="flex items-center">
+              <i className="fas fa-exclamation-triangle mr-2"></i>
+              <span>{error}</span>
+              <button
+                onClick={clearError}
+                className="ml-auto text-red-500 hover:text-red-700"
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Barra de Progresso */}
         <div className="flex items-center justify-center mb-8">
           {steps.map((step, index) => (
@@ -349,10 +409,10 @@ const PrimeirosPassos: FC = () => {
               <div
                 className={`relative flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all duration-300 cursor-pointer ${
                   step.id === currentStep
-                    ? `bg-white ${currentTheme.border} ${currentTheme.text} ring-4 ${currentTheme.ring}/50` // 1º: Estilo ATIVO
+                    ? `bg-white ${currentTheme.border} ${currentTheme.text} ring-4 ${currentTheme.ring}/50`
                     : completedSteps.includes(step.id)
-                    ? `${currentTheme.bg} border-transparent text-white` // 2º: Estilo CONCLUÍDO
-                    : "border-gray-500 text-gray-400 bg-gray-700" // 3º: Estilo PENDENTE
+                    ? `${currentTheme.bg} border-transparent text-white`
+                    : "border-gray-500 text-gray-400 bg-gray-700"
                 }`}
                 onClick={() => goToStep(step.id)}
                 style={{ marginRight: index < steps.length - 1 ? "1.5rem" : 0 }}
@@ -389,7 +449,8 @@ const PrimeirosPassos: FC = () => {
                   <button
                     type="button"
                     onClick={prevStep}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105"
+                    disabled={loading || isSubmitting}
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
                     <i className="fas fa-arrow-left mr-2"></i>
                     Voltar
@@ -401,10 +462,20 @@ const PrimeirosPassos: FC = () => {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className={`${currentTheme.bg} ${currentTheme.hover} text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 ease-in-out shadow-lg transform hover:scale-105 hover:shadow-xl`}
+                    disabled={loading || isSubmitting}
+                    className={`${currentTheme.bg} ${currentTheme.hover} text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 ease-in-out shadow-lg transform hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
                   >
-                    Avançar
-                    <i className="fas fa-arrow-right ml-2"></i>
+                    {loading ? (
+                      <>
+                        <i className="fas fa-spinner fa-spin mr-2"></i>
+                        Carregando...
+                      </>
+                    ) : (
+                      <>
+                        Avançar
+                        <i className="fas fa-arrow-right ml-2"></i>
+                      </>
+                    )}
                   </button>
                 )}
               </div>

@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { registerOwner, RegisterOwnerDTO } from "../../services/auth.service";
 
 const SignUp = () => {
@@ -15,9 +17,8 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [passwordStrength, setPasswordStrength] = useState("weak"); // 'weak', 'medium', 'strong'
+  const [passwordStrength, setPasswordStrength] = useState("weak");
   const [agreeTerms, setAgreeTerms] = useState(false);
-
   const [errors, setErrors] = useState({
     firstName: "",
     lastName: "",
@@ -30,11 +31,8 @@ const SignUp = () => {
 
   const formatPhone = (value: string) => {
     if (!value) return "";
-
     const digitsOnly = value.replace(/\D/g, "");
-
     const truncatedDigits = digitsOnly.slice(0, 11);
-
     if (truncatedDigits.length > 10) {
       return truncatedDigits.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
     }
@@ -47,7 +45,6 @@ const SignUp = () => {
     if (truncatedDigits.length > 0) {
       return truncatedDigits.replace(/(\d*)/, "($1");
     }
-
     return truncatedDigits;
   };
 
@@ -102,7 +99,6 @@ const SignUp = () => {
       setPasswordStrength("weak");
       return;
     }
-
     if (pwd.length >= 8) score++;
     if (pwd.length >= 12) score++;
     if (/[a-z]/.test(pwd)) score++;
@@ -121,7 +117,6 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
     setErrorMessage("");
     setSuccessMessage("");
     setErrors({
@@ -160,11 +155,11 @@ const SignUp = () => {
       !isConfirmPasswordValid ||
       !agreeTerms
     ) {
-      setLoading(false);
       setErrorMessage("Por favor, corrija os erros no formulário.");
       return;
     }
 
+    setLoading(true);
     const fullname = `${firstName} ${lastName}`;
     const cleanedPhone = phone.replace(/\D/g, "");
 
@@ -176,23 +171,11 @@ const SignUp = () => {
     };
 
     try {
-      console.log("Enviando para a API:", userData);
       await registerOwner(userData);
-
-      setLoading(false);
       setSuccessMessage("Conta criada com sucesso! Redirecionando...");
-
-      setTimeout(() => {
-        navigate("/first-steps");
-      }, 1500);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setTimeout(() => navigate("/first-steps"), 2000);
     } catch (error: any | unknown) {
-      console.log("Error in registerOwner: ", error);
-      setLoading(false);
-
-      // Extrair mensagem de erro específica
       let errorMsg = "Ocorreu um erro ao criar a conta. Tente novamente.";
-
       if (error?.response?.data?.message) {
         errorMsg = error.response.data.message;
       } else if (error?.response?.data?.error) {
@@ -200,65 +183,77 @@ const SignUp = () => {
       } else if (error?.message) {
         errorMsg = error.message;
       }
-
       setErrorMessage(errorMsg);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  // --- Framer Motion Variants ---
+  const containerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
+
+  const formContainerVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.07 } },
+  };
+
+  const formItemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const messageVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 300, damping: 25 },
+    },
+    exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
+  };
+
+  const strengthIndicator = {
+    weak: { width: "33.3%", backgroundColor: "#ef4444" },
+    medium: { width: "66.6%", backgroundColor: "#f59e0b" },
+    strong: { width: "100%", backgroundColor: "#22c55e" },
   };
 
   return (
     <div className="auth-bg">
-      <div
-        className="
-          bg-white
-          rounded-[16px]
-          shadow-[0_20px_60px_rgba(0,0,0,0.3)]
-        my-4
-          w-full
-          max-w-[900px]
-          grid
-          grid-cols-2
-          min-h-[600px]
-          relative
-          z-[2]
-          overflow-hidden
-          register-container
-        "
+      <motion.div
+        className="bg-white rounded-[16px] shadow-[0_20px_60px_rgba(0,0,0,0.3)] my-4 w-full max-w-[900px] grid grid-cols-2 min-h-[600px] relative z-[2] overflow-hidden register-container"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
       >
         {/* LEFT SIDE - BRANDING */}
-        <div
-          className="
-                relative
-                flex
-                flex-col
-                justify-center
-                items-center
-                p-5
-                text-white
-                bg-gradient-to-br
-                from-[var(--primary)]
-                to-[var(--primary-dark)]
-                register-left
-            "
-        >
-          <div className="flex flex-col items-center z-[1] logo-section">
-            <div
-              className="
-                w-[80px]
-                h-[80px]
-                bg-white/20
-                rounded-full
-                flex
-                items-center
-                justify-center
-                mb-5
-                backdrop-blur-md
-                border
-                border-white/30
-                logo
-                "
+        <div className="relative flex flex-col justify-center items-center p-5 text-white bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] register-left">
+          <motion.div
+            className="flex flex-col items-center z-[1] logo-section"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <motion.div
+              className="w-[80px] h-[80px] bg-white/20 rounded-full flex items-center justify-center mb-5 backdrop-blur-md border border-white/30 logo"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{
+                delay: 0.4,
+                type: "spring",
+                stiffness: 200,
+                damping: 15,
+              }}
             >
               <i className="fas fa-pizza-slice text-white text-[36px]"></i>
-            </div>
+            </motion.div>
             <h1 className="text-[28px] font-bold mb-2.5 text-shadow-[0_2px_4px_rgba(0,0,0,0.1)] brand-title">
               Cardapio Online
             </h1>
@@ -266,51 +261,73 @@ const SignUp = () => {
               Junte-se a centenas de restaurantes que já usam nossa plataforma
               para gerenciar seus negócios com eficiência.
             </p>
-          </div>
+          </motion.div>
         </div>
 
         {/* RIGHT SIDE - REGISTER */}
-        <div className="flex flex-col justify-center items-center w-full p-5 register-right">
+        <div className="flex flex-col justify-center items-center w-full p-5 register-right overflow-y-auto">
           <div className="w-full max-w-md">
-            <div className="flex flex-col items-center register-header">
+            <motion.div
+              className="flex flex-col items-center register-header"
+              variants={formItemVariants}
+            >
               <h2 className="text-3xl font-bold mb-2 register-title">
                 Criar Conta
               </h2>
               <p className="text-gray-600 mb-6 register-subtitle">
                 Preencha os dados para começar
               </p>
-            </div>
+            </motion.div>
 
-            {errorMessage && (
-              <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 flex items-center error-message">
-                <i className="fas fa-exclamation-circle mr-2"></i>
-                {errorMessage}
-              </div>
-            )}
+            <AnimatePresence>
+              {(errorMessage || successMessage) && (
+                <motion.div
+                  className={`px-4 py-2 rounded mb-4 flex items-center ${
+                    errorMessage
+                      ? "bg-red-100 text-red-700"
+                      : "bg-green-100 text-green-700"
+                  }`}
+                  variants={messageVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                >
+                  <i
+                    className={`fas ${
+                      errorMessage ? "fa-exclamation-circle" : "fa-check-circle"
+                    } mr-2`}
+                  ></i>
+                  {errorMessage || successMessage}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-            {successMessage && (
-              <div className="bg-green-100 text-green-700 px-4 py-2 rounded mb-4 flex items-center success-message">
-                <i className="fas fa-check-circle mr-2"></i>
-                {successMessage}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4 register-form">
-              <div className="grid grid-cols-2 gap-4 form-row">
-                <div className="form-group">
+            <motion.form
+              onSubmit={handleSubmit}
+              className="space-y-3 register-form"
+              variants={formContainerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.div
+                className="grid grid-cols-2 gap-4 form-row"
+                variants={formItemVariants}
+              >
+                <div>
+                  {" "}
+                  {/* First Name */}
                   <label
                     htmlFor="firstName"
-                    className="block font-medium form-label"
+                    className="block font-medium text-sm text-gray-700"
                   >
                     Nome
                   </label>
                   <input
                     id="firstName"
-                    type="text"
-                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 form-control ${
-                      errors.firstName ? "error" : ""
+                    type="text" /* ...props */
+                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 mt-1 ${
+                      errors.firstName ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Seu nome"
                     value={firstName}
                     onChange={(e) => {
                       setFirstName(e.target.value);
@@ -319,27 +336,35 @@ const SignUp = () => {
                     onBlur={(e) => validateField("firstName", e.target.value)}
                     required
                   />
-                  {errors.firstName && (
-                    <div className="field-error " style={{ display: "block" }}>
-                      {errors.firstName}
-                    </div>
-                  )}
+                  <AnimatePresence>
+                    {errors.firstName && (
+                      <motion.div
+                        variants={messageVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        className="text-red-500 text-xs mt-1"
+                      >
+                        {errors.firstName}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-
-                <div className="form-group">
+                <div>
+                  {" "}
+                  {/* Last Name */}
                   <label
                     htmlFor="lastName"
-                    className="block font-medium form-label"
+                    className="block font-medium text-sm text-gray-700"
                   >
                     Sobrenome
                   </label>
                   <input
                     id="lastName"
-                    type="text"
-                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 form-control ${
-                      errors.lastName ? "error" : ""
+                    type="text" /* ...props */
+                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 mt-1 ${
+                      errors.lastName ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Seu sobrenome"
                     value={lastName}
                     onChange={(e) => {
                       setLastName(e.target.value);
@@ -348,25 +373,37 @@ const SignUp = () => {
                     onBlur={(e) => validateField("lastName", e.target.value)}
                     required
                   />
-                  {errors.lastName && (
-                    <div className="field-error" style={{ display: "block" }}>
-                      {errors.lastName}
-                    </div>
-                  )}
+                  <AnimatePresence>
+                    {errors.lastName && (
+                      <motion.div
+                        variants={messageVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        className="text-red-500 text-xs mt-1"
+                      >
+                        {errors.lastName}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="form-group">
-                <label htmlFor="email" className="block font-medium form-label">
+              <motion.div variants={formItemVariants}>
+                {" "}
+                {/* Email */}
+                <label
+                  htmlFor="email"
+                  className="block font-medium text-sm text-gray-700"
+                >
                   Email
                 </label>
                 <input
                   id="email"
-                  type="email"
-                  className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 form-control ${
-                    errors.email ? "error" : ""
+                  type="email" /* ...props */
+                  className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 mt-1 ${
+                    errors.email ? "border-red-500" : "border-gray-300"
                   }`}
-                  placeholder="seu@email.com"
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
@@ -375,61 +412,77 @@ const SignUp = () => {
                   onBlur={(e) => validateField("email", e.target.value)}
                   required
                 />
-                {errors.email && (
-                  <div className="field-error" style={{ display: "block" }}>
-                    {errors.email}
-                  </div>
-                )}
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 form-row">
-                <div className="form-group">
-                  <label
-                    htmlFor="phone"
-                    className="block font-medium form-label"
-                  >
-                    Telefone
-                  </label>
-                  <input
-                    id="phone"
-                    type="tel"
-                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 form-control ${
-                      errors.phone ? "error" : ""
-                    }`}
-                    placeholder="(83) 99999-9999"
-                    value={phone}
-                    onChange={(e) => {
-                      const formattedPhone = formatPhone(e.target.value);
-                      setPhone(formattedPhone);
-                      validateField("phone", formattedPhone);
-                    }}
-                    onBlur={(e) => validateField("phone", e.target.value)}
-                    required
-                    maxLength={15}
-                  />
-                  {errors.phone && (
-                    <div className="field-error" style={{ display: "block" }}>
-                      {errors.phone}
-                    </div>
+                <AnimatePresence>
+                  {errors.email && (
+                    <motion.div
+                      variants={messageVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      className="text-red-500 text-xs mt-1"
+                    >
+                      {errors.email}
+                    </motion.div>
                   )}
-                </div>
-              </div>
+                </AnimatePresence>
+              </motion.div>
 
-              <div className="form-group">
+              <motion.div variants={formItemVariants}>
+                {" "}
+                {/* Phone */}
+                <label
+                  htmlFor="phone"
+                  className="block font-medium text-sm text-gray-700"
+                >
+                  Telefone
+                </label>
+                <input
+                  id="phone"
+                  type="tel" /* ...props */
+                  className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 mt-1 ${
+                    errors.phone ? "border-red-500" : "border-gray-300"
+                  }`}
+                  value={phone}
+                  onChange={(e) => {
+                    const val = formatPhone(e.target.value);
+                    setPhone(val);
+                    validateField("phone", val);
+                  }}
+                  onBlur={(e) => validateField("phone", e.target.value)}
+                  required
+                  maxLength={15}
+                />
+                <AnimatePresence>
+                  {errors.phone && (
+                    <motion.div
+                      variants={messageVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      className="text-red-500 text-xs mt-1"
+                    >
+                      {errors.phone}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              <motion.div variants={formItemVariants}>
+                {" "}
+                {/* Password */}
                 <label
                   htmlFor="password"
-                  className="block font-medium form-label"
+                  className="block font-medium text-sm text-gray-700"
                 >
                   Senha
                 </label>
                 <div className="relative">
                   <input
                     id="password"
-                    type={showPassword ? "text" : "password"}
-                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 form-control ${
-                      errors.password ? "error" : ""
+                    type={showPassword ? "text" : "password"} /* ...props */
+                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 mt-1 ${
+                      errors.password ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="••••••••"
                     value={password}
                     onChange={(e) => {
                       setPassword(e.target.value);
@@ -441,7 +494,7 @@ const SignUp = () => {
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-2.5 text-gray-500 password-toggle"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
                     onClick={() => togglePasswordVisibility("password")}
                   >
                     <i
@@ -451,50 +504,60 @@ const SignUp = () => {
                     ></i>
                   </button>
                 </div>
-                <div className="password-strength">
-                  <div className="strength-bar">
-                    <div
-                      className={`strength-fill ${
-                        passwordStrength === "weak"
-                          ? "bg-red-500 w-1/3"
-                          : passwordStrength === "medium"
-                          ? "bg-yellow-500 w-2/3"
-                          : "bg-green-500 w-full"
-                      }`}
-                    ></div>
+                <div className="flex items-center mt-2">
+                  <div className="w-full bg-gray-200 rounded-full h-1.5 mr-2">
+                    <motion.div
+                      className="h-1.5 rounded-full"
+                      initial={false}
+                      animate={passwordStrength}
+                      variants={strengthIndicator}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    ></motion.div>
                   </div>
-                  <span className="strength-text text-xs text-gray-500">
-                    {password.length === 0
-                      ? "Digite uma senha"
-                      : passwordStrength === "weak"
-                      ? "Senha fraca"
-                      : passwordStrength === "medium"
-                      ? "Senha média"
-                      : "Senha forte"}
+                  <span className="text-xs text-gray-500 capitalize w-16 text-right">
+                    {password.length > 0
+                      ? passwordStrength
+                          .replace("weak", "fraca")
+                          .replace("medium", "média")
+                          .replace("strong", "forte")
+                      : ""}
                   </span>
                 </div>
-                {errors.password && (
-                  <div className="field-error" style={{ display: "block" }}>
-                    {errors.password}
-                  </div>
-                )}
-              </div>
+                <AnimatePresence>
+                  {errors.password && (
+                    <motion.div
+                      variants={messageVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      className="text-red-500 text-xs mt-1"
+                    >
+                      {errors.password}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
 
-              <div className="form-group">
+              <motion.div variants={formItemVariants}>
+                {" "}
+                {/* Confirm Password */}
                 <label
                   htmlFor="confirmPassword"
-                  className="block font-medium form-label"
+                  className="block font-medium text-sm text-gray-700"
                 >
                   Confirmar Senha
                 </label>
                 <div className="relative">
                   <input
                     id="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 form-control ${
-                      errors.confirmPassword ? "error" : ""
+                    type={
+                      showConfirmPassword ? "text" : "password"
+                    } /* ...props */
+                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 mt-1 ${
+                      errors.confirmPassword
+                        ? "border-red-500"
+                        : "border-gray-300"
                     }`}
-                    placeholder="••••••••"
                     value={confirmPassword}
                     onChange={(e) => {
                       setConfirmPassword(e.target.value);
@@ -507,7 +570,7 @@ const SignUp = () => {
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-2.5 text-gray-500 password-toggle"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
                     onClick={() => togglePasswordVisibility("confirmPassword")}
                   >
                     <i
@@ -517,99 +580,92 @@ const SignUp = () => {
                     ></i>
                   </button>
                 </div>
-                {errors.confirmPassword && (
-                  <div className="field-error" style={{ display: "block" }}>
-                    {errors.confirmPassword}
-                  </div>
-                )}
-              </div>
+                <AnimatePresence>
+                  {errors.confirmPassword && (
+                    <motion.div
+                      variants={messageVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      className="text-red-500 text-xs mt-1"
+                    >
+                      {errors.confirmPassword}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
 
-              <div className="flex items-center mt-4 terms-checkbox">
+              <motion.div
+                className="flex items-center"
+                variants={formItemVariants}
+              >
+                {" "}
+                {/* Terms */}
                 <input
                   type="checkbox"
                   id="agreeTerms"
-                  className="mr-2"
+                  className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
                   checked={agreeTerms}
                   onChange={(e) => {
                     setAgreeTerms(e.target.checked);
-                    setErrors((prev) => ({ ...prev, terms: "" })); // Clear terms error on change
+                    setErrors((prev) => ({ ...prev, terms: "" }));
                   }}
                   required
                 />
-                <label htmlFor="agreeTerms" className="text-gray-600 text-sm">
+                <label
+                  htmlFor="agreeTerms"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Eu concordo com os{" "}
-                  <a
-                    href="#"
-                    target="_blank"
-                    className="text-red-500 hover:underline"
-                  >
+                  <a href="#" className="text-red-500 hover:underline">
                     Termos de Uso
-                  </a>{" "}
-                  e{" "}
-                  <a
-                    href="#"
-                    target="_blank"
-                    className="text-red-500 hover:underline"
-                  >
-                    Política de Privacidade
                   </a>
                 </label>
-              </div>
-              {errors.terms && (
-                <div className="field-error" style={{ display: "block" }}>
-                  {errors.terms}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                className="w-full bg-red-500 text-white py-3 rounded hover:bg-red-600 transition register-button"
-                disabled={loading}
-              >
-                {loading ? (
-                  <span
-                    className="loading"
-                    style={{ display: "inline-block" }}
-                  ></span>
-                ) : (
-                  "Criar Conta"
+              </motion.div>
+              <AnimatePresence>
+                {errors.terms && (
+                  <motion.div
+                    variants={messageVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    className="text-red-500 text-xs"
+                  >
+                    {errors.terms}
+                  </motion.div>
                 )}
-              </button>
+              </AnimatePresence>
 
-              <div className="divider">
-                <span className="text-gray-400 bg-white px-5 relative z-[2]">
-                  ou cadastre-se com
-                </span>
-              </div>
-
-              <div className="flex space-x-4 social-register">
-                <a
-                  href="#"
-                  className="flex-1 flex items-center justify-center border py-2 rounded hover:bg-gray-100 transition social-btn"
-                >
-                  <i className="fab fa-google mr-2 google"></i> Google
-                </a>
-                <a
-                  href="#"
-                  className="flex-1 flex items-center justify-center border py-2 rounded hover:bg-gray-100 transition social-btn"
-                >
-                  <i className="fab fa-facebook mr-2 facebook"></i> Facebook
-                </a>
-              </div>
-            </form>
-            <p className="text-center text-gray-600 mt-6 login-link">
-              Já tem uma conta?{" "}
-              <a
-                href="#"
-                className="text-red-500 hover:underline"
-                onClick={() => navigate("/login")}
+              <motion.button
+                type="submit"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                disabled={loading}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                Fazer login
-              </a>
-            </p>
+                {loading ? "Criando..." : "Criar Conta"}
+              </motion.button>
+
+              <motion.div
+                className="text-center text-sm text-gray-600 mt-4"
+                variants={formItemVariants}
+              >
+                <p>
+                  Já tem uma conta?{" "}
+                  <motion.a
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => navigate("/login")}
+                    className="font-medium text-red-500 hover:text-red-600 cursor-pointer"
+                  >
+                    Fazer login
+                  </motion.a>
+                </p>
+              </motion.div>
+            </motion.form>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

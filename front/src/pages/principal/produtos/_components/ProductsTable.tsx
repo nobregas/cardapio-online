@@ -13,7 +13,8 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
   title,
   path,
 }) => {
-  const handleToggle = (checked: boolean) => {
+  const handleToggle = (item: Product, checked: boolean) => {
+    console.log(item);
     console.log(checked);
   };
 
@@ -29,8 +30,8 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       key: "status",
       header: "Status",
       toggleField: true,
-      onToggle: (checked: boolean) => {
-        handleToggle(checked);
+      onToggle: (item: Product, checked: boolean) => {
+        handleToggle(item, checked);
       },
     },
     { key: "actions", header: "Ações", isActionColumn: true },
