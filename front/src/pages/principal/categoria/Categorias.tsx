@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../../../components/layout/PageHeader";
-import { categories } from "../../../data/mockData";
 import CategoryTable from "./_components/CategoryTable";
 
 const Categorias = () => {
@@ -44,11 +43,7 @@ const Categorias = () => {
       />
 
       {/* Tabela de Categorias */}
-      <CategoryTable
-        categories={categories}
-        title={"Categorias"}
-        path={"/categorias"}
-      />
+      <CategoryTable title={"Categorias"} path={"/categorias"} />
     </div>
   );
 };
