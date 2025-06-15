@@ -3,8 +3,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { registerOwner, RegisterOwnerDTO } from "../../services/auth.service";
+import { useAuth } from "../../components/auth/AuthContext";
 
 const SignUp = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -171,7 +173,8 @@ const SignUp = () => {
     };
 
     try {
-      await registerOwner(userData);
+      const response = await registerOwner(userData);
+      login(response.token);
       setSuccessMessage("Conta criada com sucesso! Redirecionando...");
       setTimeout(() => navigate("/first-steps"), 2000);
     } catch (error: any | unknown) {

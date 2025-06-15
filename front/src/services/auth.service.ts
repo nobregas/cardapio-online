@@ -30,7 +30,6 @@ export interface User {
 export const registerOwner = async (data: RegisterOwnerDTO) => {
   try {
     const response = await api.post("/auth/register_owner", data);
-    localStorage.setItem("authToken", response.data.token);
     return response.data;
   } catch (error) {
     console.log("Error in registerOwner: ", error);
@@ -41,8 +40,6 @@ export const registerOwner = async (data: RegisterOwnerDTO) => {
 export const login = async (data: LoginDTO) => {
   try {
     const response = await api.post("/auth/login", data);
-    const token = response.data.token;
-    localStorage.setItem("authToken", token);
     return response.data;
   } catch (error) {
     console.log("Error in login: ", error);

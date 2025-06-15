@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { LoginDTO, login } from "../../services/auth.service";
+import { LoginDTO } from "../../services/auth.service";
+import { login as loginService } from "../../services/auth.service";
+import { useAuth } from "../../components/auth/AuthContext";
 
 const SignIn = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +27,8 @@ const SignIn = () => {
 
     try {
       const loginData: LoginDTO = { email, password };
-      await login(loginData);
+      const response = await loginService(loginData);
+      login(response.token);
       setSuccessMessage("Login realizado com sucesso!");
       setTimeout(() => navigate("/"), 1500);
     } catch (error) {
