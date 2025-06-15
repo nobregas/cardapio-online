@@ -174,7 +174,7 @@ const SignUp = () => {
 
     try {
       const response = await registerOwner(userData);
-      login(response.token);
+      login(response.token.token);
       setSuccessMessage("Conta criada com sucesso! Redirecionando...");
       setTimeout(() => navigate("/first-steps"), 2000);
     } catch (error: any | unknown) {
