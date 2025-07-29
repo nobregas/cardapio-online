@@ -1,7 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import api from "./api"; // Assumindo que seu client está em './api'
+import api from "./api";
 
-// Interfaces para tipagem
+export interface PaymentSettingsDTO {
+  online: {
+    active: boolean;
+    methods: {
+      creditCard: boolean;
+      debitCard: boolean;
+      pix: boolean;
+    };
+  };
+  onDelivery: {
+    active: boolean;
+    methods: {
+      cash: boolean;
+      creditCard: boolean;
+      debitCard: boolean;
+      pix: boolean;
+    };
+    needsChange: boolean;
+  };
+  pixDetails: {
+    key: string;
+    keyHolderName: string;
+  };
+  additionalInstructions?: string;
+}
+
 export interface CreateRestaurantDTO {
   name: string;
   cnpj: string;
@@ -15,6 +40,7 @@ export interface CreateRestaurantDTO {
     state: string;
     zipCode: string;
   };
+  paymentSettings?: PaymentSettingsDTO;
 }
 
 export interface UpdateRestaurantAddressDTO {
@@ -47,6 +73,7 @@ export interface IRestaurant {
     state: string;
     zipCode: string;
   };
+  paymentSettings?: PaymentSettingsDTO;
   createdAt: string;
   updatedAt: string;
 }
@@ -96,11 +123,9 @@ class RestaurantService {
   /**
    * Buscar restaurante por ID do proprietário
    */
-  async getByOwnerId(ownerId: string): Promise<IRestaurant> {
+  async getByOwnerId(): Promise<IRestaurant> {
     try {
-      const response = await api.get<IRestaurant>(
-        `${this.baseEndpoint}/owner/${ownerId}`
-      );
+      const response = await api.get<IRestaurant>(`${this.baseEndpoint}/owner`);
       return response.data;
     } catch (error) {
       throw this.handleError(error);
@@ -136,6 +161,23 @@ class RestaurantService {
       const response = await api.patch<IRestaurant>(
         `${this.baseEndpoint}/${id}/update_address`,
         addressData
+      );
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  /**
+   * Atualizar configurações de pagamento
+   */
+  async updatePaymentSettings(
+    paymentSettings: PaymentSettingsDTO
+  ): Promise<IRestaurant> {
+    try {
+      const response = await api.patch<IRestaurant>(
+        `${this.baseEndpoint}/payment-settings`,
+        paymentSettings
       );
       return response.data;
     } catch (error) {

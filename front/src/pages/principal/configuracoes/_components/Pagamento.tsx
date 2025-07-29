@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SwitchButton from "../../../../components/ui/SwitchButton";
 import PaymentMethodCard from "../../../../components/ui/PaymentMethodCard";
+import { useRestaurant } from "../../../../hooks/useRestaurant";
 
 const Pagamento = () => {
+  const {
+    updatePaymentSettings,
+    getRestaurantByOwnerId,
+    restaurant,
+    loading,
+    error,
+  } = useRestaurant();
   // Estados para controle dos toggles principais
   const [onlinePaymentActive, setOnlinePaymentActive] = useState(false);
   const [deliveryPaymentActive, setDeliveryPaymentActive] = useState(false);
@@ -18,41 +26,106 @@ const Pagamento = () => {
   const [deliveryDebit, setDeliveryDebit] = useState(false);
   const [deliveryPix, setDeliveryPix] = useState(false);
 
-  // Estados para configurações adicionais
   const [changeOption, setChangeOption] = useState(false);
   const [pixKey, setPixKey] = useState("");
   const [pixName, setPixName] = useState("");
   const [additionalMessage, setAdditionalMessage] = useState("");
 
-  const handleSave = () => {
-    console.log("Salvando configurações de pagamento:", {
-      onlinePaymentActive,
-      deliveryPaymentActive,
-      onlineCredit,
-      onlineDebit,
-      onlinePix,
-      deliveryCash,
-      deliveryCredit,
-      deliveryDebit,
-      deliveryPix,
-      changeOption,
-      pixKey,
-      pixName,
-      additionalMessage,
-    });
-    alert("Configurações salvas com sucesso!");
+  const [loadingSave, setLoadingSave] = useState(false);
+
+  // Carrega o restaurante
+  useEffect(() => {
+    if (!restaurant && !loading) {
+      getRestaurantByOwnerId();
+    }
+  }, [restaurant, getRestaurantByOwnerId, loading]);
+
+  // Carrega as configurações de pagamento
+  useEffect(() => {
+    if (restaurant && restaurant.paymentSettings) {
+      const { online, onDelivery, pixDetails, additionalInstructions } =
+        restaurant.paymentSettings;
+
+      setOnlinePaymentActive(online.active);
+      setOnlineCredit(online.methods.creditCard);
+      setOnlineDebit(online.methods.debitCard);
+      setOnlinePix(online.methods.pix);
+
+      setDeliveryPaymentActive(onDelivery.active);
+      setDeliveryCash(onDelivery.methods.cash);
+      setDeliveryCredit(onDelivery.methods.creditCard);
+      setDeliveryDebit(onDelivery.methods.debitCard);
+      setDeliveryPix(onDelivery.methods.pix);
+
+      setChangeOption(onDelivery.needsChange);
+
+      setPixKey(pixDetails?.key || "");
+      setPixName(pixDetails?.keyHolderName || "");
+      setAdditionalMessage(additionalInstructions || "");
+    }
+  }, [restaurant]);
+
+  const handleSave = async () => {
+    if (loadingSave) return;
+
+    setLoadingSave(true);
+
+    const paymentData = {
+      online: {
+        active: onlinePaymentActive,
+        methods: {
+          creditCard: onlineCredit,
+          debitCard: onlineDebit,
+          pix: onlinePix,
+        },
+      },
+      onDelivery: {
+        active: deliveryPaymentActive,
+        methods: {
+          cash: deliveryCash,
+          creditCard: deliveryCredit,
+          debitCard: deliveryDebit,
+          pix: deliveryPix,
+        },
+        needsChange: changeOption,
+      },
+      pixDetails: {
+        key: pixKey,
+        keyHolderName: pixName,
+      },
+      additionalInstructions: additionalMessage,
+    };
+
+    const result = await updatePaymentSettings(paymentData);
+
+    setLoadingSave(false);
+
+    if (result) {
+      alert("Configurações salvas com sucesso!");
+    } else {
+      alert(`Falha ao salvar: ${error}`);
+    }
   };
 
+  if (loading && !restaurant) {
+    return (
+      <div className="flex justify-center items-center p-10">
+        <p className="text-lg text-gray-600">Carregando configurações...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white rounded-lg shadow p-6 max-w-8xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <h3 className="text-xl font-semibold">Configurações de Pagamento</h3>
         <button
           onClick={handleSave}
+          disabled={loadingSave}
           className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors flex items-center gap-2"
         >
           <i className="fas fa-save"></i>
-          Salvar Alterações
+          {loadingSave ? "Salvando..." : "Salvar Alterações"}
         </button>
       </div>
 

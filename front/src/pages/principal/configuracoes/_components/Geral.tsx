@@ -47,7 +47,7 @@ const Geral = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white rounded-lg shadow p-6 max-w-8xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <h3 className="text-xl font-semibold">Configurações Gerais</h3>
         <button

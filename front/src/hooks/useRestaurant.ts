@@ -4,6 +4,7 @@ import restaurantService, {
   CreateRestaurantDTO,
   UpdateRestaurantDTO,
   UpdateRestaurantAddressDTO,
+  PaymentSettingsDTO,
 } from "../services/restaurant.service";
 
 interface UseRestaurantReturn {
@@ -15,7 +16,7 @@ interface UseRestaurantReturn {
   // Ações
   createRestaurant: (data: CreateRestaurantDTO) => Promise<IRestaurant | null>;
   getRestaurantById: (id: string) => Promise<IRestaurant | null>;
-  getRestaurantByOwnerId: (ownerId: string) => Promise<IRestaurant | null>;
+  getRestaurantByOwnerId: () => Promise<IRestaurant | null>;
   updateRestaurant: (
     id: string,
     data: UpdateRestaurantDTO
@@ -25,6 +26,9 @@ interface UseRestaurantReturn {
     data: UpdateRestaurantAddressDTO
   ) => Promise<IRestaurant | null>;
   deleteRestaurant: (id: string) => Promise<boolean>;
+  updatePaymentSettings: (
+    data: PaymentSettingsDTO
+  ) => Promise<IRestaurant | null>;
   clearError: () => void;
   resetState: () => void;
 }
@@ -75,16 +79,14 @@ export const useRestaurant = (): UseRestaurantReturn => {
     [handleAsync]
   );
 
-  const getRestaurantByOwnerId = useCallback(
-    async (ownerId: string): Promise<IRestaurant | null> => {
+  const getRestaurantByOwnerId =
+    useCallback(async (): Promise<IRestaurant | null> => {
       return handleAsync(async () => {
-        const result = await restaurantService.getByOwnerId(ownerId);
+        const result = await restaurantService.getByOwnerId();
         setRestaurant(result);
         return result;
       });
-    },
-    [handleAsync]
-  );
+    }, [handleAsync]);
 
   const updateRestaurant = useCallback(
     async (
@@ -108,6 +110,18 @@ export const useRestaurant = (): UseRestaurantReturn => {
     ): Promise<IRestaurant | null> => {
       return handleAsync(async () => {
         const result = await restaurantService.updateAddress(id, data);
+        setRestaurant(result);
+
+        return result;
+      });
+    },
+    [handleAsync]
+  );
+
+  const updatePaymentSettings = useCallback(
+    async (data: PaymentSettingsDTO): Promise<IRestaurant | null> => {
+      return handleAsync(async () => {
+        const result = await restaurantService.updatePaymentSettings(data);
         setRestaurant(result);
 
         return result;
@@ -156,6 +170,7 @@ export const useRestaurant = (): UseRestaurantReturn => {
     getRestaurantByOwnerId,
     updateRestaurant,
     updateRestaurantAddress,
+    updatePaymentSettings,
     deleteRestaurant,
     clearError,
     resetState,

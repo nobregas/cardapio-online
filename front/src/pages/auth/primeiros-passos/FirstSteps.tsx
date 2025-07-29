@@ -1,7 +1,10 @@
 import { useState, FC, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRestaurant } from "../../../hooks/useRestaurant";
-import { CreateRestaurantDTO } from "../../../services/restaurant.service";
+import {
+  CreateRestaurantDTO,
+  PaymentSettingsDTO,
+} from "../../../services/restaurant.service";
 import Step1DadosBasicos from "./_components/Step1DadosBasicos";
 import Step5Finalizar from "./_components/Step5Finalizar";
 import Step4Pagamento from "./_components/Step4Pagamento";
@@ -58,12 +61,19 @@ const PrimeirosPassos: FC = () => {
   const [openTime, setOpenTime] = useState("08:00");
   const [closeTime, setCloseTime] = useState("22:00");
 
-  const [onlinePayment, setOnlinePayment] = useState(false);
-  const [deliveryPayment, setDeliveryPayment] = useState(true);
-  const [acceptsCash, setAcceptsCash] = useState(true);
-  const [acceptsCard, setAcceptsCard] = useState(true);
-  const [acceptsPix, setAcceptsPix] = useState(true);
-
+  const [onlinePaymentActive, setOnlinePaymentActive] = useState(false);
+  const [deliveryPaymentActive, setDeliveryPaymentActive] = useState(true);
+  const [onlineCredit, setOnlineCredit] = useState(false);
+  const [onlineDebit, setOnlineDebit] = useState(false);
+  const [onlinePix, setOnlinePix] = useState(false);
+  const [deliveryCash, setDeliveryCash] = useState(true);
+  const [deliveryCredit, setDeliveryCredit] = useState(true);
+  const [deliveryDebit, setDeliveryDebit] = useState(true);
+  const [deliveryPix, setDeliveryPix] = useState(true);
+  const [changeOption, setChangeOption] = useState(false);
+  const [pixKey, setPixKey] = useState("");
+  const [pixName, setPixName] = useState("");
+  const [additionalMessage, setAdditionalMessage] = useState("");
   const [errors, setErrors] = useState<Errors>({});
 
   const steps = [
@@ -236,16 +246,32 @@ const PrimeirosPassos: FC = () => {
       case 4:
         return (
           <Step4Pagamento
-            onlinePayment={onlinePayment}
-            setOnlinePayment={setOnlinePayment}
-            deliveryPayment={deliveryPayment}
-            setDeliveryPayment={setDeliveryPayment}
-            acceptsCash={acceptsCash}
-            setAcceptsCash={setAcceptsCash}
-            acceptsCard={acceptsCard}
-            setAcceptsCard={setAcceptsCard}
-            acceptsPix={acceptsPix}
-            setAcceptsPix={setAcceptsPix}
+            onlinePaymentActive={onlinePaymentActive}
+            setOnlinePaymentActive={setOnlinePaymentActive}
+            deliveryPaymentActive={deliveryPaymentActive}
+            setDeliveryPaymentActive={setDeliveryPaymentActive}
+            onlineCredit={onlineCredit}
+            setOnlineCredit={setOnlineCredit}
+            onlineDebit={onlineDebit}
+            setOnlineDebit={setOnlineDebit}
+            onlinePix={onlinePix}
+            setOnlinePix={setOnlinePix}
+            deliveryCash={deliveryCash}
+            setDeliveryCash={setDeliveryCash}
+            deliveryCredit={deliveryCredit}
+            setDeliveryCredit={setDeliveryCredit}
+            deliveryDebit={deliveryDebit}
+            setDeliveryDebit={setDeliveryDebit}
+            deliveryPix={deliveryPix}
+            setDeliveryPix={setDeliveryPix}
+            changeOption={changeOption}
+            setChangeOption={setChangeOption}
+            pixKey={pixKey}
+            setPixKey={setPixKey}
+            pixName={pixName}
+            setPixName={setPixName}
+            additionalMessage={additionalMessage}
+            setAdditionalMessage={setAdditionalMessage}
             currentTheme={currentTheme}
           />
         );
@@ -309,6 +335,32 @@ const PrimeirosPassos: FC = () => {
     setIsSubmitting(true);
 
     try {
+      const paymentSettings: PaymentSettingsDTO = {
+        online: {
+          active: onlinePaymentActive,
+          methods: {
+            creditCard: onlineCredit,
+            debitCard: onlineDebit,
+            pix: onlinePix,
+          },
+        },
+        onDelivery: {
+          active: deliveryPaymentActive,
+          methods: {
+            cash: deliveryCash,
+            creditCard: deliveryCredit,
+            debitCard: deliveryDebit,
+            pix: deliveryPix,
+          },
+          needsChange: changeOption,
+        },
+        pixDetails: {
+          key: pixKey,
+          keyHolderName: pixName,
+        },
+        additionalInstructions: additionalMessage,
+      };
+
       const restaurantData: CreateRestaurantDTO = {
         name: restaurantName,
         email,
@@ -322,14 +374,7 @@ const PrimeirosPassos: FC = () => {
           state,
           zipCode: cep.replace(/\D/g, ""),
         },
-      };
-
-      const paymentMethods = {
-        onlinePayment,
-        deliveryPayment,
-        acceptsCash,
-        acceptsCard,
-        acceptsPix,
+        paymentSettings: paymentSettings,
       };
 
       const settings = {
@@ -342,7 +387,7 @@ const PrimeirosPassos: FC = () => {
           close: closeTime,
         },
       };
-      console.log(settings, paymentMethods);
+      console.log(settings, paymentSettings);
 
       console.log("Enviando dados do restaurante:", restaurantData);
 

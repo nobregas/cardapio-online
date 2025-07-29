@@ -10,15 +10,17 @@ const Estabelecimento = () => {
     cidade: "",
     estado: "",
     cep: "",
-    descricao: ""
+    descricao: "",
   });
   const [logo, setLogo] = useState<string | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { id, value } = e.target;
     setFormData({
       ...formData,
-      [id.replace('store-', '')]: value
+      [id.replace("store-", "")]: value,
     });
   };
 
@@ -36,21 +38,26 @@ const Estabelecimento = () => {
   const handleSave = () => {
     console.log("Salvando configurações:", {
       ...formData,
-      logo: logo ? "Imagem carregada" : null
+      logo: logo ? "Imagem carregada" : null,
     });
   };
 
   const triggerFileInput = () => {
-    const logo = document.getElementById('logo-upload');
+    const logo = document.getElementById("logo-upload");
     if (logo != null) {
-      logo.click()
+      logo.click();
     }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6" id="store-panel">
+    <div
+      className="bg-white rounded-lg shadow p-6 max-w-8xl mx-auto"
+      id="store-panel"
+    >
       <div className="flex justify-between items-center mb-8">
-        <h3 className="text-xl font-semibold">Informações do Estabelecimento</h3>
+        <h3 className="text-xl font-semibold">
+          Informações do Estabelecimento
+        </h3>
         <button
           onClick={handleSave}
           className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors"
@@ -127,31 +134,35 @@ const Estabelecimento = () => {
         <label className="text-sm font-medium mb-1">
           Logo do Estabelecimento
         </label>
-        <div 
+        <div
           className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:bg-gray-50 hover:border-orange-500"
           onClick={triggerFileInput}
         >
           {logo ? (
             <div className="flex flex-col items-center">
-              <img 
-                src={logo} 
-                alt="Logo do estabelecimento" 
-                className="max-h-40 max-w-full mb-2" 
+              <img
+                src={logo}
+                alt="Logo do estabelecimento"
+                className="max-h-40 max-w-full mb-2"
               />
-              <p className="text-sm text-gray-500">Clique para alterar a imagem</p>
+              <p className="text-sm text-gray-500">
+                Clique para alterar a imagem
+              </p>
             </div>
           ) : (
             <>
               <i className="fas fa-cloud-upload-alt text-gray-400 text-xl mb-2"></i>
               <p className="text-gray-500">Clique ou arraste uma imagem</p>
-              <p className="text-xs text-gray-400">PNG, JPG ou JPEG (Máx. 2MB)</p>
+              <p className="text-xs text-gray-400">
+                PNG, JPG ou JPEG (Máx. 2MB)
+              </p>
             </>
           )}
-          <input 
-            type="file" 
-            id="logo-upload" 
-            className="hidden" 
-            accept="image/*" 
+          <input
+            type="file"
+            id="logo-upload"
+            className="hidden"
+            accept="image/*"
             onChange={handleImageChange}
           />
         </div>

@@ -1,20 +1,39 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Step4Props {
-  onlinePayment: boolean;
-  setOnlinePayment: (value: boolean) => void;
-  deliveryPayment: boolean;
-  setDeliveryPayment: (value: boolean) => void;
-  acceptsCash: boolean;
-  setAcceptsCash: (value: boolean) => void;
-  acceptsCard: boolean;
-  setAcceptsCard: (value: boolean) => void;
-  acceptsPix: boolean;
-  setAcceptsPix: (value: boolean) => void;
+  onlinePaymentActive: boolean;
+  setOnlinePaymentActive: (value: boolean) => void;
+  deliveryPaymentActive: boolean;
+  setDeliveryPaymentActive: (value: boolean) => void;
+
+  onlineCredit: boolean;
+  setOnlineCredit: (value: boolean) => void;
+  onlineDebit: boolean;
+  setOnlineDebit: (value: boolean) => void;
+  onlinePix: boolean;
+  setOnlinePix: (value: boolean) => void;
+
+  deliveryCash: boolean;
+  setDeliveryCash: (value: boolean) => void;
+  deliveryCredit: boolean;
+  setDeliveryCredit: (value: boolean) => void;
+  deliveryDebit: boolean;
+  setDeliveryDebit: (value: boolean) => void;
+  deliveryPix: boolean;
+  setDeliveryPix: (value: boolean) => void;
+
+  changeOption: boolean;
+  setChangeOption: (value: boolean) => void;
+  pixKey: string;
+  setPixKey: (value: string) => void;
+  pixName: string;
+  setPixName: (value: string) => void;
+  additionalMessage: string;
+  setAdditionalMessage: (value: string) => void;
+
   currentTheme: { bg: string };
 }
-
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -61,27 +80,36 @@ const checkboxVariants = {
   },
 };
 
-const Step4Pagamentos: FC<Step4Props> = ({
-  onlinePayment,
-  setOnlinePayment,
-  deliveryPayment,
-  setDeliveryPayment,
-  acceptsCash,
-  setAcceptsCash,
-  acceptsCard,
-  setAcceptsCard,
-  acceptsPix,
-  setAcceptsPix,
-  currentTheme,
-}) => {
-  // Estados adicionais para funcionalidades extras
-  const [onlineCredit, setOnlineCredit] = useState(false);
-  const [onlineDebit, setOnlineDebit] = useState(false);
-  const [onlinePix, setOnlinePix] = useState(false);
-  const [changeOption, setChangeOption] = useState(false);
-  const [pixKey, setPixKey] = useState("");
-  const [pixName, setPixName] = useState("");
-  const [additionalMessage, setAdditionalMessage] = useState("");
+const Step4Pagamentos: FC<Step4Props> = (props) => {
+  const {
+    onlinePaymentActive,
+    setOnlinePaymentActive,
+    deliveryPaymentActive,
+    setDeliveryPaymentActive,
+    onlineCredit,
+    setOnlineCredit,
+    onlineDebit,
+    setOnlineDebit,
+    onlinePix,
+    setOnlinePix,
+    deliveryCash,
+    setDeliveryCash,
+    deliveryCredit,
+    setDeliveryCredit,
+    deliveryDebit,
+    setDeliveryDebit,
+    deliveryPix,
+    setDeliveryPix,
+    changeOption,
+    setChangeOption,
+    pixKey,
+    setPixKey,
+    pixName,
+    setPixName,
+    additionalMessage,
+    setAdditionalMessage,
+    currentTheme,
+  } = props;
 
   return (
     <motion.section
@@ -118,9 +146,9 @@ const Step4Pagamentos: FC<Step4Props> = ({
             </div>
             <motion.button
               type="button"
-              onClick={() => setOnlinePayment(!onlinePayment)}
+              onClick={() => setOnlinePaymentActive(!onlinePaymentActive)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                onlinePayment ? currentTheme.bg : "bg-gray-300"
+                onlinePaymentActive ? currentTheme.bg : "bg-gray-300"
               }`}
               whileTap={{ scale: 0.95 }}
               tabIndex={0}
@@ -128,7 +156,7 @@ const Step4Pagamentos: FC<Step4Props> = ({
               <motion.span
                 className="inline-block h-4 w-4 rounded-full bg-white"
                 animate={{
-                  x: onlinePayment ? 24 : 4,
+                  x: onlinePaymentActive ? 24 : 4,
                 }}
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
               />
@@ -136,7 +164,7 @@ const Step4Pagamentos: FC<Step4Props> = ({
           </div>
 
           <AnimatePresence>
-            {onlinePayment && (
+            {onlinePaymentActive && (
               <motion.div
                 variants={expandVariants}
                 initial="hidden"
@@ -220,9 +248,9 @@ const Step4Pagamentos: FC<Step4Props> = ({
             </div>
             <motion.button
               type="button"
-              onClick={() => setDeliveryPayment(!deliveryPayment)}
+              onClick={() => setDeliveryPaymentActive(!deliveryPaymentActive)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                deliveryPayment ? currentTheme.bg : "bg-gray-300"
+                deliveryPaymentActive ? currentTheme.bg : "bg-gray-300"
               }`}
               whileTap={{ scale: 0.95 }}
               tabIndex={0}
@@ -230,7 +258,7 @@ const Step4Pagamentos: FC<Step4Props> = ({
               <motion.span
                 className="inline-block h-4 w-4 rounded-full bg-white"
                 animate={{
-                  x: deliveryPayment ? 24 : 4,
+                  x: deliveryPaymentActive ? 24 : 4,
                 }}
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
               />
@@ -238,7 +266,7 @@ const Step4Pagamentos: FC<Step4Props> = ({
           </div>
 
           <AnimatePresence>
-            {deliveryPayment && (
+            {deliveryPaymentActive && (
               <motion.div
                 variants={expandVariants}
                 initial="hidden"
@@ -258,8 +286,8 @@ const Step4Pagamentos: FC<Step4Props> = ({
                   >
                     <motion.input
                       type="checkbox"
-                      checked={acceptsCash}
-                      onChange={(e) => setAcceptsCash(e.target.checked)}
+                      checked={deliveryCash}
+                      onChange={(e) => setDeliveryCash(e.target.checked)}
                       className="h-5 w-5 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
                       whileTap={{ scale: 0.9 }}
                     />
@@ -269,18 +297,29 @@ const Step4Pagamentos: FC<Step4Props> = ({
 
                   <motion.label
                     variants={checkboxVariants}
-                    className="flex items-center space-x-3 cursor-pointer hover:bg-white p-2 rounded transition-colors"
-                    whileHover={{ scale: 1.02 }}
+                    className="flex items-center space-x-3 cursor-pointer"
                   >
-                    <motion.input
+                    <input
                       type="checkbox"
-                      checked={acceptsCard}
-                      onChange={(e) => setAcceptsCard(e.target.checked)}
+                      checked={deliveryCredit}
+                      onChange={(e) => setDeliveryCredit(e.target.checked)}
                       className="h-5 w-5 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
-                      whileTap={{ scale: 0.9 }}
                     />
                     <i className="fas fa-credit-card text-blue-500"></i>
-                    <span>Cartão (Crédito/Débito)</span>
+                    <span>Cartão de Crédito</span>
+                  </motion.label>
+                  <motion.label
+                    variants={checkboxVariants}
+                    className="flex items-center space-x-3 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={deliveryDebit}
+                      onChange={(e) => setDeliveryDebit(e.target.checked)}
+                      className="h-5 w-5 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+                    />
+                    <i className="fas fa-credit-card text-blue-500"></i>
+                    <span>Cartão de Débito</span>
                   </motion.label>
 
                   <motion.label
@@ -290,8 +329,8 @@ const Step4Pagamentos: FC<Step4Props> = ({
                   >
                     <motion.input
                       type="checkbox"
-                      checked={acceptsPix}
-                      onChange={(e) => setAcceptsPix(e.target.checked)}
+                      checked={deliveryPix}
+                      onChange={(e) => setDeliveryPix(e.target.checked)}
                       className="h-5 w-5 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
                       whileTap={{ scale: 0.9 }}
                     />
