@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LoginDTO } from "../../services/auth.service";
 import { login as loginService } from "../../services/auth.service";
 import { useAuth } from "../../components/auth/AuthContext";
+import restaurantService from "../../services/restaurant.service";
 
 const SignIn = () => {
   const { login } = useAuth();
@@ -30,7 +31,17 @@ const SignIn = () => {
       const response = await loginService(loginData);
       login(response.token);
       setSuccessMessage("Login realizado com sucesso!");
-      setTimeout(() => navigate("/"), 1500);
+
+      try {
+        const restaurant = await restaurantService.getByOwnerId();
+        setTimeout(() => {
+          navigate(restaurant ? "/" : "/first-steps");
+        }, 1500);
+      } catch (error) {
+        // If there's an error checking for restaurant, redirect to first-steps
+        console.error("Error checking restaurant:", error);
+        setTimeout(() => navigate("/first-steps"), 1500);
+      }
     } catch (error) {
       console.log("Error in handleSubmit: ", error);
       setErrorMessage("Email ou senha incorretos");
