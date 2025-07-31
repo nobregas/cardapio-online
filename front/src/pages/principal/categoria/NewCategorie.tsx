@@ -51,7 +51,7 @@ const NewCategoryPage = () => {
               <motion.div whileHover={{ x: -3 }} transition={{ duration: 0.2 }}>
                 <ArrowLeftIcon className="w-4 h-4 mr-2" />
               </motion.div>
-              Voltar para Categorias
+              Voltar
             </Link>
           </motion.div>
           <motion.div

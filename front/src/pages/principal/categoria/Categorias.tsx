@@ -35,9 +35,9 @@ const Categorias = () => {
     <div>
       <PageHeader
         title={"Gerenciar Categorias"}
-        searchPlaceholder={`Buscar Categorias...`}
+        searchPlaceholder={`Buscar`}
         onAddClick={handleAddProduct}
-        addButtonLabel={"Adicionar Categoria"}
+        addButtonLabel={"Adicionar"}
         onSearch={handleSearch}
         filters={filters}
       />
