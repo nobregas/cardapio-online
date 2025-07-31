@@ -90,7 +90,7 @@ const ProductsForm = () => {
             <p className="text-gray-600 mb-6">
               Todas as informações preenchidas serão perdidas.
             </p>
-            <div className="flex justify-center gap-13">
+            <div className="flex justify-center gap-16">
               <button
                 onClick={abortCancel}
                 className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
@@ -101,7 +101,7 @@ const ProductsForm = () => {
                 onClick={confirmCancel}
                 className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
               >
-                Confirmar Cancelamento
+                Confirmar
               </button>
             </div>
           </div>
@@ -112,7 +112,7 @@ const ProductsForm = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
             <label className="block mb-2 font-medium text-gray-700">
-              Nome do produto*
+              Nome*
             </label>
             <input
               type="text"
@@ -146,7 +146,7 @@ const ProductsForm = () => {
                 onClick={() => navigate("/categorias/novo")}
                 className="flex items-center mt-1 text-orange-500 hover:text-orange-800 font-medium cursor-pointer"
               >
-                <i className="fas fa-plus-circle mr-1"></i> Criar nova categoria
+                <i className="fas fa-plus-circle mr-1"></i> Nova categoria
               </a>
             </div>
           </div>
@@ -200,7 +200,7 @@ const ProductsForm = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
             <label className="block mb-2 font-medium text-gray-700">
-              Imagem do produto
+              Imagem
             </label>
             <div className="relative flex flex-col items-center p-6 border-2 border-dashed border-gray-300 rounded hover:border-orange-500 cursor-pointer">
               <input
@@ -231,7 +231,7 @@ const ProductsForm = () => {
 
           <div>
             <label className="block mb-2 font-medium text-gray-700">
-              Status do Produto
+              Ativo
             </label>
             <div className="flex items-center gap-3 mt-2">
               <SwitchButton
@@ -294,7 +294,7 @@ const ProductsForm = () => {
                 className="text-orange-500 hover:text-orange-700 font-medium flex items-center"
                 onClick={addCustomAdditional}
               >
-                <i className="fas fa-plus mr-1"></i> Adicionar novo
+                <i className="fas fa-plus mr-1"></i> Novo adicional
               </button>
             </div>
           </div>
@@ -347,7 +347,7 @@ const ProductsForm = () => {
             type="submit"
             className="px-6 py-3 bg-orange-500 text-white rounded hover:bg-orange-600 flex items-center"
           >
-            <i className="fas fa-save mr-2"></i> Salvar Produto
+            <i className="fas fa-save mr-2"></i> Salvar
           </button>
         </div>
       </form>

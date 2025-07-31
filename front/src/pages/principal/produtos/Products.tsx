@@ -8,10 +8,10 @@ const Products = () => {
   //const [categoryFilter, setCategoryFilter] = useState<string>("");
   //const [statusFilter, setStatusFilter] = useState<string>("");
 
- // const [searchQuery, setSearchQuery] = useState<string>("");
+  // const [searchQuery, setSearchQuery] = useState<string>("");
 
   const navigate = useNavigate();
-  
+
   const handleSearch = (query: string): void => {
     //setSearchQuery(query);
     // Aqui você implementaria a lógica de busca
@@ -29,39 +29,43 @@ const Products = () => {
         { value: "1", label: "Pizzas Tradicionais" },
         { value: "2", label: "Pizzas Especiais" },
         { value: "3", label: "Bebidas" },
-        { value: "4", label: "Sobremesas" }
+        { value: "4", label: "Sobremesas" },
       ],
       onChange: (value: string): void => {
         //setCategoryFilter(value);
         console.log("Category filter changed:", value);
-      }
+      },
     },
     {
       label: "Status",
       options: [
         { value: "1", label: "Ativos" },
-        { value: "2", label: "Inativos" }
+        { value: "2", label: "Inativos" },
       ],
       onChange: (value: string): void => {
         //setStatusFilter(value);
         console.log("Status filter changed:", value);
-      }
-    }
+      },
+    },
   ];
 
   return (
     <div>
-      <PageHeader 
+      <PageHeader
         title={"Gerenciar Produtos"}
-        searchPlaceholder={`Buscar produtos...`}
+        searchPlaceholder={`Buscar`}
         onAddClick={handleAddProduct}
-        addButtonLabel={"Adicionar Produto"}
+        addButtonLabel={"Adicionar"}
         onSearch={handleSearch}
         filters={filters}
       />
 
       {/* Tabela de Produtos */}
-      <ProductsTable products={products} title={"Produtos"} path={"/produtos"} />
+      <ProductsTable
+        products={products}
+        title={"Produtos"}
+        path={"/produtos"}
+      />
     </div>
   );
 };

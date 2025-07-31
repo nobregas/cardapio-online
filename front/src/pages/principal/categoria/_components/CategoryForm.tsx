@@ -462,7 +462,7 @@ const CategoryForm = () => {
                 Todas as informações preenchidas serão perdidas.
               </motion.p>
               <motion.div
-                className="flex justify-center gap-3"
+                className="flex justify-center gap-16"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -485,7 +485,7 @@ const CategoryForm = () => {
                   whileHover="hover"
                   whileTap="tap"
                 >
-                  Confirmar Cancelamento
+                  Confirmar
                 </motion.button>
               </motion.div>
             </motion.div>
