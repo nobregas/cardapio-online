@@ -191,13 +191,13 @@ const Envio = () => {
         </p>
 
         {/* Valor Mínimo do Pedido */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <span className="font-medium text-blue-800">
+              <span className="font-medium text-gray-800">
                 Valor Mínimo do Pedido
               </span>
-              <p className="text-sm text-blue-600">
+              <p className="text-sm text-gray-600">
                 Valor mínimo que o cliente deve pedir (para todos os tipos de
                 atendimento)
               </p>
@@ -210,14 +210,16 @@ const Envio = () => {
 
           {minOrderValueEnabled && (
             <div className="ml-4">
-              <label className="block text-sm font-medium mb-2 text-blue-800">
+              <label className="block text-sm font-medium mb-2 text-gray-800">
                 Valor mínimo do pedido
                 <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full ml-2">
                   Obrigatório
                 </span>
               </label>
               <div className="relative max-w-xs">
-                <span className="absolute left-3 top-2 text-gray-500">R$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                  R$
+                </span>
                 <input
                   type="number"
                   value={minOrderTotal}
@@ -226,11 +228,11 @@ const Envio = () => {
                   }
                   step="0.01"
                   min="0"
-                  className="w-full pl-8 p-2 border border-blue-300 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full pl-9 p-2 border border-gray-300 rounded focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
                   placeholder="15.00"
                 />
               </div>
-              <p className="text-xs text-blue-600 mt-1">
+              <p className="text-xs text-gray-600 mt-1">
                 Pedidos abaixo deste valor não serão aceitos
               </p>
             </div>

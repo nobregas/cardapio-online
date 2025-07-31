@@ -150,7 +150,7 @@ const Notificacoes = () => {
           Escolha como você e sua equipe desejam receber as notificações.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
           <div className="space-y-4 mb-6">
             {/* Opções de canais */}
             <div className="flex items-center justify-between">
@@ -208,10 +208,10 @@ const Notificacoes = () => {
           </div>
 
           {/* Campos de Contato */}
-          <div className="space-y-4 pt-4 border-t border-blue-200">
+          <div className="space-y-4 pt-4 border-t border-gray-200">
             {canaisNotificacao.email && (
               <div>
-                <label className="block text-sm font-medium mb-2 text-blue-800">
+                <label className="block text-sm font-medium mb-2 ">
                   E-mails para Notificação
                 </label>
                 <input
@@ -220,17 +220,17 @@ const Notificacoes = () => {
                   onChange={(e) =>
                     setContatos((prev) => ({ ...prev, emails: e.target.value }))
                   }
-                  className="w-full p-2 border border-blue-300 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full p-2 border border-gray-300 rounded focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
                   placeholder="admin@email.com, gerente@email.com"
                 />
-                <p className="text-xs text-blue-600 mt-1">
+                <p className="text-xs text-gray-600 mt-1">
                   Separe múltiplos e-mails por vírgula.
                 </p>
               </div>
             )}
             {(canaisNotificacao.sms || canaisNotificacao.whatsapp) && (
               <div>
-                <label className="block text-sm font-medium mb-2 text-blue-800">
+                <label className="block text-sm font-medium mb-2 ">
                   Telefones para Notificação
                 </label>
                 <input
@@ -242,10 +242,10 @@ const Notificacoes = () => {
                       telefones: e.target.value,
                     }))
                   }
-                  className="w-full p-2 border border-blue-300 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full p-2 border border-gray-300 rounded focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
                   placeholder="+5583999998888"
                 />
-                <p className="text-xs text-blue-600 mt-1">
+                <p className="text-xs text-gray-600 mt-1">
                   Para SMS ou WhatsApp. Separe múltiplos números por vírgula.
                 </p>
               </div>
@@ -261,13 +261,11 @@ const Notificacoes = () => {
           Receba relatórios periódicos para acompanhar o desempenho.
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <span className="font-medium text-purple-800">
-                Resumo Diário de Vendas
-              </span>
-              <p className="text-sm text-purple-600">
+              <span className="font-medium ">Resumo Diário de Vendas</span>
+              <p className="text-sm text-gray-600">
                 Receber um e-mail com o resumo do dia.
               </p>
             </div>
@@ -280,8 +278,8 @@ const Notificacoes = () => {
           </div>
 
           {resumoDiario.ativado && (
-            <div className="pt-4 mt-4 border-t border-purple-200">
-              <label className="block text-sm font-medium mb-2 text-purple-800">
+            <div className="pt-4 mt-4 border-t border-gray-200">
+              <label className="block text-sm font-medium mb-2 ">
                 Horário de Envio
               </label>
               <input
@@ -293,7 +291,7 @@ const Notificacoes = () => {
                     horario: e.target.value,
                   }))
                 }
-                className="p-2 border border-purple-300 rounded"
+                className="p-2 border border-gray-300 rounded"
               />
             </div>
           )}
