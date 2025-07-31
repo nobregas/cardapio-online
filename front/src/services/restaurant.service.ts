@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import api from "./api";
 
@@ -123,7 +124,7 @@ class RestaurantService {
   /**
    * Buscar restaurante por ID do proprietário
    */
-  async getByOwnerId(): Promise<IRestaurant> {
+  async getByOwnerId(): Promise<IRestaurant | null> {
     try {
       const response = await api.get<IRestaurant>(`${this.baseEndpoint}/owner`);
       return response.data;
