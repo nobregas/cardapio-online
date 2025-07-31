@@ -191,9 +191,6 @@ const Pagamento = () => {
           <div className="flex justify-between items-center mb-4">
             <span className="font-semibold flex items-center">
               Aceita pagamento na entrega?
-              <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full ml-2">
-                Obrigatório
-              </span>
             </span>
             <SwitchButton
               checked={deliveryPaymentActive}
@@ -214,7 +211,6 @@ const Pagamento = () => {
                   description="Pagamento em espécie"
                   checked={deliveryCash}
                   onChange={setDeliveryCash}
-                  required={true}
                 />
                 <PaymentMethodCard
                   icon="fas fa-credit-card"
@@ -222,7 +218,6 @@ const Pagamento = () => {
                   description="Maquininha na entrega"
                   checked={deliveryCredit}
                   onChange={setDeliveryCredit}
-                  required={true}
                 />
                 <PaymentMethodCard
                   icon="fas fa-credit-card"
@@ -230,7 +225,6 @@ const Pagamento = () => {
                   description="Maquininha na entrega"
                   checked={deliveryDebit}
                   onChange={setDeliveryDebit}
-                  required={true}
                 />
                 <PaymentMethodCard
                   icon="fas fa-qrcode"
@@ -238,7 +232,6 @@ const Pagamento = () => {
                   description="QR Code ou chave Pix"
                   checked={deliveryPix}
                   onChange={setDeliveryPix}
-                  required={true}
                 />
               </div>
 
@@ -252,9 +245,6 @@ const Pagamento = () => {
                 />
                 <label htmlFor="change-option" className="flex items-center">
                   Solicita troco?
-                  <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full ml-2">
-                    Obrigatório
-                  </span>
                 </label>
               </div>
               <p className="text-xs text-gray-500 mt-2">
@@ -285,9 +275,6 @@ const Pagamento = () => {
                 className="block text-sm font-medium mb-2"
               >
                 Chave Pix
-                <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full ml-2">
-                  Obrigatório
-                </span>
               </label>
               <input
                 type="text"
@@ -305,9 +292,6 @@ const Pagamento = () => {
                 className="block text-sm font-medium mb-2"
               >
                 Nome do favorecido
-                <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full ml-2">
-                  Obrigatório
-                </span>
               </label>
               <input
                 type="text"
