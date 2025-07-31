@@ -19,7 +19,7 @@ import SignUp from "./pages/auth/SignUp";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { AuthProvider } from "./components/auth/AuthContext";
 import FirstSteps from "./pages/auth/primeiros-passos/FirstSteps";
-import NewCategorie from "./pages/principal/categoria/NewCategorie";
+import NewCategorie from "./pages/principal/categoria/NewCategoria";
 
 function App() {
   return (
