@@ -280,7 +280,7 @@ const CategoryForm = () => {
           >
             <motion.div variants={fieldVariants}>
               <label className="block mb-2 font-medium text-gray-700">
-                Nome da categoria*
+                Nome*
               </label>
               <motion.input
                 type="text"
@@ -343,7 +343,7 @@ const CategoryForm = () => {
 
           <motion.div className="mb-6" variants={fieldVariants}>
             <label className="block mb-2 font-medium text-gray-700">
-              Status da Categoria
+              Ativo
             </label>
             <div className="flex items-center gap-3 mt-2">
               <motion.div
@@ -356,15 +356,6 @@ const CategoryForm = () => {
                   onChange={(value) => setIsActive(value)}
                 />
               </motion.div>
-              <motion.span
-                className="text-sm text-gray-600"
-                animate={{
-                  color: isActive ? "#16a34a" : "#dc2626",
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                {isActive ? "Categoria ativa" : "Categoria inativa"}
-              </motion.span>
             </div>
             <p className="text-xs text-gray-500 mt-2">
               Categorias inativas não aparecem no menu para os clientes.
@@ -426,7 +417,7 @@ const CategoryForm = () => {
                     className="flex items-center"
                   >
                     <i className="fas fa-save mr-2" />
-                    Salvar Categoria
+                    Salvar
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -439,22 +430,20 @@ const CategoryForm = () => {
       <AnimatePresence>
         {showCancelConfirmation && (
           <motion.div
-            className="fixed inset-0 flex items-center justify-center z-50"
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+            className="fixed inset-0 flex items-center justify-center z-50 bg-black/40"
+            onClick={abortCancel}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <motion.div
-              className="absolute inset-0 bg-black"
-              variants={overlayVariants}
-              onClick={abortCancel}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.3 }}
-              exit={{ opacity: 0 }}
-            />
             <motion.div
               className="bg-white rounded-lg shadow-xl p-6 max-w-sm w-full z-10 mx-4"
               variants={modalVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              onClick={(e) => e.stopPropagation()}
             >
               <motion.h3
                 className="text-lg font-medium text-gray-900 mb-4"
